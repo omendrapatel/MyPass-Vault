@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - MyPass Vault</title>
+    <link rel="icon" type="image/png" href="assets/app_icon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            light: '#8F82FF',
+                            DEFAULT: '#6C5CE7',
+                            dark: '#0D1326',
+                            bg: '#0A0E21',
+                            card: '#141B34'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#0A0E21] text-white font-sans">
+    <header class="sticky top-0 z-50 bg-[#0A0E21]/80 border-b border-brand/20">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-3">
+                <img src="assets/app_icon.png" alt="MyPass Logo" class="w-8 h-8 rounded-lg">
+                <span class="text-xl font-bold">My<span class="text-brand-light">Pass</span> Vault</span>
+            </a>
+            <a href="index.html" class="text-sm text-brand-light hover:text-white"><i class="fas fa-arrow-left mr-2"></i> Back to Home</a>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-16">
+        <h1 class="text-3xl font-bold mb-8">Privacy Policy</h1>
+        <p class="text-gray-400 text-xs mb-6">Last Updated: September 2, 2026</p>
+        <div class="space-y-6">
+            <div class="bg-brand-card p-6 rounded-2xl border border-brand/10">
+                <h2 class="text-lg font-bold mb-2">1. Information Collection</h2>
+                <p class="text-gray-300 text-sm">MyPass Vault is a 100% offline application. We do not collect, monitor, store, or transmit any of your personal credentials to external servers.</p>
+            </div>
+            <div class="bg-brand-card p-6 rounded-2xl border border-brand/10">
+                <h2 class="text-lg font-bold mb-2">2. Data Encryption</h2>
+                <p class="text-gray-300 text-sm">All local database parameters are encrypted using industry-standard AES-256 bit encryption algorithms.</p>
+            </div>
+            <div class="bg-brand-card p-6 rounded-2xl border border-brand/10">
+                <h2 class="text-lg font-bold mb-2">3. Third-Party Access</h2>
+                <p class="text-gray-300 text-sm">No user data is ever sold, leased, or shared with any third parties or advertisers.</p>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

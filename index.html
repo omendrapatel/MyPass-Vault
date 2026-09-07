@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyPass Vault - 100% Offline, Encrypted Password Manager & 2FA Authenticator</title>
+    <link rel="icon" type="image/png" href="assets/app_icon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            light: '#8F82FF',
+                            DEFAULT: '#6C5CE7',
+                            dark: '#0D1326',
+                            bg: '#0A0E21',
+                            card: '#141B34',
+                            surface: '#1A2346',
+                            accent: '#00D2D3'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glow-purple {
+            box-shadow: 0 0 35px -5px rgba(108, 92, 231, 0.4);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 30px -5px rgba(0, 210, 211, 0.3);
+        }
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="bg-[#0A0E21] text-white font-sans scroll-smooth bg-grid">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 bg-[#0A0E21]/90 backdrop-blur-md border-b border-brand/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <img src="assets/app_icon.png" alt="MyPass Logo" class="w-11 h-11 rounded-2xl shadow-lg shadow-brand/40 border border-brand/40">
+                <div>
+                    <span class="text-xl font-extrabold tracking-wider text-white">My<span class="text-brand-light">Pass</span></span>
+                    <span class="ml-1.5 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-brand/20 text-brand-light border border-brand/40 rounded-full">Vault 2.0</span>
+                </div>
+            </div>
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-300">
+                <a href="#features" class="hover:text-brand-light transition">Features</a>
+                <a href="#totp" class="hover:text-brand-light transition">2FA Authenticator</a>
+                <a href="#comparison" class="hover:text-brand-light transition">Why Offline?</a>
+                <a href="#screenshots" class="hover:text-brand-light transition">Screenshots</a>
+                <a href="#faq" class="hover:text-brand-light transition">FAQ</a>
+                <a href="privacy.html" class="hover:text-brand-light transition">Privacy Policy</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <a href="#download" class="relative inline-flex items-center justify-center bg-brand hover:bg-brand-light px-6 py-2.5 rounded-xl text-sm font-bold tracking-wide shadow-lg shadow-brand/30 transition duration-200">
+                    <i class="fas fa-download mr-2 text-xs"></i> Download Free
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-16 pb-24 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:grid lg:grid-cols-12 lg:gap-12 items-center">
+                <!-- Text Column -->
+                <div class="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-7 lg:text-left">
+                    <div class="inline-flex items-center space-x-2 bg-brand/15 border border-brand/40 px-4 py-1.5 rounded-full text-xs font-semibold text-brand-light mb-6 shadow-inner">
+                        <span class="flex h-2.5 w-2.5 relative">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                        </span>
+                        <span>Zero Cloud • 100% Offline • Windows & Android</span>
+                    </div>
+                    
+                    <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white mb-6 leading-tight">
+                        Your Passwords & 2FA. <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-light via-purple-300 to-teal-300">100% Offline & Private.</span>
+                    </h1>
+                    
+                    <p class="text-base sm:text-lg text-gray-300 mb-8 leading-relaxed font-normal">
+                        <strong>MyPass Vault</strong> is a military-grade, serverless password manager, 2FA TOTP authenticator, and encrypted personal diary. Everything stays strictly locked on your device using <strong>AES-256 encryption</strong>. No subscriptions, no cloud databases, zero data leaks.
+                    </p>
+
+                    <!-- CTAs -->
+                    <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mb-10">
+                        <a href="#download" class="inline-flex items-center justify-center bg-gradient-to-r from-brand to-purple-600 hover:from-brand-light hover:to-purple-500 text-white px-8 py-4 rounded-2xl font-bold tracking-wide shadow-xl shadow-brand/40 transition transform hover:-translate-y-0.5">
+                            <i class="fab fa-windows mr-3 text-lg"></i> Download for Windows
+                        </a>
+                        <a href="#download" class="inline-flex items-center justify-center bg-brand-card hover:bg-brand-surface border border-brand/40 text-white px-8 py-4 rounded-2xl font-bold tracking-wide transition transform hover:-translate-y-0.5">
+                            <i class="fab fa-android mr-3 text-lg text-brand-light"></i> Download Android APK
+                        </a>
+                    </div>
+
+                    <!-- Security Pill Indicators -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-brand/20 text-xs text-gray-400">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-shield-halved text-brand-light text-sm"></i>
+                            <span>AES-256 Local</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-clock-rotate-left text-teal-400 text-sm"></i>
+                            <span>Offline 2FA (RFC 6238)</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-trash-can text-amber-400 text-sm"></i>
+                            <span>30-Day Trash Bin</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-masks-theater text-purple-400 text-sm"></i>
+                            <span>Decoy Duress PIN</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Hero Mockup Column -->
+                <div class="mt-12 sm:mt-16 lg:mt-0 lg:col-span-5 flex justify-center relative">
+                    <div class="absolute -inset-4 bg-gradient-to-tr from-brand/30 via-purple-600/20 to-teal-500/20 blur-3xl rounded-full"></div>
+                    
+                    <!-- Mobile Device Outer Container -->
+                    <div class="relative w-80 h-[610px] bg-slate-950 rounded-[48px] border-[10px] border-slate-800 shadow-2xl overflow-hidden flex flex-col justify-between glow-purple">
+                        <!-- Top Notch & Header -->
+                        <div class="bg-brand-dark px-5 py-4 flex items-center justify-between border-b border-brand/20">
+                            <div class="flex items-center space-x-2">
+                                <img src="assets/app_icon.png" alt="Icon" class="w-7 h-7 rounded-xl border border-brand/30">
+                                <div>
+                                    <div class="text-xs font-black text-white">MyPass Vault</div>
+                                    <div class="text-[8px] text-emerald-400 font-bold">● 100% OFFLINE</div>
+                                </div>
+                            </div>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full bg-brand/20 text-brand-light font-bold">AES-256</span>
+                        </div>
+
+                        <!-- Live Screen Body Simulation -->
+                        <div class="flex-grow bg-[#0A0E21] p-4 space-y-3.5 overflow-y-auto">
+                            <!-- Security Score Banner -->
+                            <div class="bg-gradient-to-r from-brand-card to-brand-surface p-3.5 rounded-2xl border border-brand/30 flex items-center justify-between">
+                                <div>
+                                    <div class="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Vault Security Score</div>
+                                    <div class="text-lg font-black text-emerald-400 mt-0.5">96 / 100 <span class="text-[9px] font-semibold text-gray-300">(Excellent)</span></div>
+                                </div>
+                                <div class="w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold text-xs">
+                                    <i class="fas fa-check-double"></i>
+                                </div>
+                            </div>
+
+                            <!-- 2FA TOTP Card Live Demo -->
+                            <div class="bg-brand-card p-3 rounded-2xl border border-brand/20">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span class="text-[10px] font-bold text-gray-300 flex items-center">
+                                        <i class="fas fa-shield-alt text-brand-light mr-1.5"></i> Google Authenticator
+                                    </span>
+                                    <span class="text-[9px] font-bold text-teal-400 flex items-center">
+                                        <i class="fas fa-circle-notch fa-spin mr-1"></i> 24s
+                                    </span>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-900 px-3 py-1.5 rounded-xl border border-brand/15">
+                                    <span class="text-base font-mono font-black text-teal-300 tracking-widest">849 201</span>
+                                    <span class="text-[9px] px-2 py-0.5 bg-brand/20 text-brand-light rounded font-bold">Copy</span>
+                                </div>
+                            </div>
+
+                            <!-- Mock Password Item 1 -->
+                            <div class="bg-brand-card p-3 rounded-2xl border border-brand/10 flex items-center justify-between">
+                                <div class="flex items-center space-x-2.5">
+                                    <div class="w-8 h-8 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center font-bold text-xs text-blue-400">
+                                        <i class="fab fa-google"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-[11px] font-bold text-white">Google Workspace</div>
+                                        <div class="text-[9px] text-gray-400">admin@company.com</div>
+                                    </div>
+                                </div>
+                                <i class="fas fa-lock text-brand-light text-xs"></i>
+                            </div>
+
+                            <!-- Mock Password Item 2 -->
+                            <div class="bg-brand-card p-3 rounded-2xl border border-brand/10 flex items-center justify-between">
+                                <div class="flex items-center space-x-2.5">
+                                    <div class="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center font-bold text-xs text-emerald-400">
+                                        <i class="fas fa-building-columns"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-[11px] font-bold text-white">HDFC Bank Corp</div>
+                                        <div class="text-[9px] text-gray-400">hdfc_secure_id</div>
+                                    </div>
+                                </div>
+                                <i class="fas fa-lock text-brand-light text-xs"></i>
+                            </div>
+                        </div>
+
+                        <!-- Footer Bottom Bar -->
+                        <div class="bg-brand-dark px-6 py-3 flex justify-between border-t border-brand/20 text-gray-400 text-xs">
+                            <span class="text-brand-light flex flex-col items-center font-bold"><i class="fas fa-key"></i><span class="text-[8px] mt-1">Vault</span></span>
+                            <span class="flex flex-col items-center hover:text-white"><i class="fas fa-shield-virus"></i><span class="text-[8px] mt-1">2FA TOTP</span></span>
+                            <span class="flex flex-col items-center hover:text-white"><i class="fas fa-book"></i><span class="text-[8px] mt-1">Diary</span></span>
+                            <span class="flex flex-col items-center hover:text-white"><i class="fas fa-trash"></i><span class="text-[8px] mt-1">Trash</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Feature Grid Section -->
+    <section id="features" class="py-24 border-t border-brand/10 bg-brand-card/30 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-brand-light text-xs font-black tracking-widest uppercase bg-brand/15 border border-brand/30 px-3.5 py-1 rounded-full">All-in-One Security</span>
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl mt-3 mb-4">
+                    Built for Absolute Digital Sovereignty
+                </h2>
+                <p class="text-base sm:text-lg text-gray-400">
+                    Every single feature in MyPass Vault is designed to run 100% locally on your machine without relying on external servers.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 1. AES-256 -->
+                <div class="bg-brand-card border border-brand/15 p-8 rounded-3xl hover:border-brand/50 transition duration-300 hover:-translate-y-1 shadow-lg">
+                    <div class="w-14 h-14 bg-brand/20 rounded-2xl flex items-center justify-center text-brand-light mb-6 text-2xl border border-brand/30">
+                        <i class="fas fa-shield-halved"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2.5">AES-256 Bit Encryption</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Your master passwords, credentials, notes, and 2FA secrets are cryptographically secured using military-grade AES-256 in local secure storage.
+                    </p>
+                </div>
+
+                <!-- 2. 2FA TOTP Engine -->
+                <div class="bg-brand-card border border-brand/15 p-8 rounded-3xl hover:border-brand/50 transition duration-300 hover:-translate-y-1 shadow-lg" id="totp">
+                    <div class="w-14 h-14 bg-teal-500/20 rounded-2xl flex items-center justify-center text-teal-300 mb-6 text-2xl border border-teal-500/30">
+                        <i class="fas fa-stopwatch"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2.5">Built-in 2FA / TOTP Authenticator</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Pure offline RFC 6238 TOTP engine that generates 6-digit 2FA codes with 30-sec live countdown timers. Replace Google Authenticator or Authy.
+                    </p>
+                </div>
+
+                <!-- 3. Security Audit & Health Score -->
+                <div class="bg-brand-card border border-brand/15 p-8 rounded-3xl hover:border-brand/50 transition duration-300 hover:-translate-y-1 shadow-lg">
+                    <div class="w-14 h-14 bg-emerald-500/20 rounded-2xl flex items-center justify-center text-emerald-400 mb-6 text-2xl border border-emerald-500/30">
+                        <i class="fas fa-heart-pulse"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2.5">Security Audit & Health Score</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Live 0–100% Vault Health gauge. Automatically identifies weak passwords, duplicate credentials, and old accounts needing immediate password rotation.
+                    </p>
+                </div>
+
+                <!-- 4. Centralized Recycle Bin (Trash) -->
+                <div class="bg-brand-card border border-brand/15 p-8 rounded-3xl hover:border-brand/50 transition duration-300 hover:-translate-y-1 shadow-lg">
+                    <div class="w-14 h-14 bg-amber-500/20 rounded-2xl flex items-center justify-center text-amber-400 mb-6 text-2xl border border-amber-500/30">
+                        <i class="fas fa-trash-arrow-up"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2.5">Trash Bin with 30-Day Auto Purge</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Accidentally deleted a password or note? Recover it anytime from the dedicated dual-tab Recycle Bin. Items older than 30 days are automatically purged.
+                    </p>
+                </div>
+
+                <!-- 5. QR Code & Wi-Fi Scanner -->
+                <div class="bg-brand-card border border-brand/15 p-8 rounded-3xl hover:border-brand/50 transition duration-300 hover:-translate-y-1 shadow-lg">
+                    <div class="w-14 h-14 bg-cyan-500/20 rounded-2xl flex items-center justify-center text-cyan-300 mb-6 text-2xl border border-cyan-500/30">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2.5">QR Code & Wi-Fi Importer</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Scan or import QR images for instant Wi-Fi network credential parsing, 2FA otpauth URIs, and account credentials directly into your vault.
+                    </p>
+                </div>
+
+                <!-- 6. Decoy Duress PIN (Fake Vault) -->
+                <div class="bg-brand-card border border-brand/15 p-8 rounded-3xl hover:border-brand/50 transition duration-300 hover:-translate-y-1 shadow-lg">
+                    <div class="w-14 h-14 bg-rose-500/20 rounded-2xl flex items-center justify-center text-rose-400 mb-6 text-2xl border border-rose-500/30">
+                        <i class="fas fa-masks-theater"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2.5">Decoy PIN (Duress Mode)</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Set a secondary decoy PIN. If forced to unlock your vault, entering the decoy PIN opens a completely fake, empty vault to protect your real data.
+                    </p>
+                </div>
+
+                <!-- 7. Confidential Secure Diary -->
+                <div class="bg-brand-card border border-brand/15 p-8 rounded-3xl hover:border-brand/50 transition duration-300 hover:-translate-y-1 shadow-lg">
+                    <div class="w-14 h-14 bg-purple-500/20 rounded-2xl flex items-center justify-center text-purple-300 mb-6 text-2xl border border-purple-500/30">
+                        <i class="fas fa-book-bookmark"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2.5">Encrypted Markdown Diary</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Store confidential seed phrases, SSH keys, recovery codes, and personal logs. Features 6 dynamic color themes, category tags, and formatting toolbar.
+                    </p>
+                </div>
+
+                <!-- 8. 100% Offline Encrypted Backups -->
+                <div class="bg-brand-card border border-brand/15 p-8 rounded-3xl hover:border-brand/50 transition duration-300 hover:-translate-y-1 shadow-lg">
+                    <div class="w-14 h-14 bg-indigo-500/20 rounded-2xl flex items-center justify-center text-indigo-300 mb-6 text-2xl border border-indigo-500/30">
+                        <i class="fas fa-file-shield"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2.5">Local Encrypted Backups (.mypass)</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Export your full vault into password-protected <code class="text-brand-light">.mypass</code> local files. Transfer securely between Windows and Android without cloud involvement.
+                    </p>
+                </div>
+
+                <!-- 9. Bilingual Localization -->
+                <div class="bg-brand-card border border-brand/15 p-8 rounded-3xl hover:border-brand/50 transition duration-300 hover:-translate-y-1 shadow-lg">
+                    <div class="w-14 h-14 bg-orange-500/20 rounded-2xl flex items-center justify-center text-orange-400 mb-6 text-2xl border border-orange-500/30">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2.5">Bilingual (English & हिन्दी)</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Complete native bilingual support across both Windows and Android. Switch between English and हिन्दी with a single tap in settings.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Table: Cloud Managers vs MyPass Vault -->
+    <section id="comparison" class="py-24 border-t border-brand/10">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-emerald-400 text-xs font-black tracking-widest uppercase bg-emerald-500/15 border border-emerald-500/30 px-3.5 py-1 rounded-full">Zero Vulnerability</span>
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl mt-3 mb-4">
+                    Why Cloud Password Managers Fail You
+                </h2>
+                <p class="text-base text-gray-400">
+                    When password managers store data on remote cloud servers, one data breach compromises millions of users.
+                </p>
+            </div>
+
+            <div class="overflow-x-auto bg-brand-card border border-brand/20 rounded-3xl shadow-2xl p-2 sm:p-6">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="border-b border-brand/20 text-gray-400">
+                            <th class="py-4 px-4 font-bold text-base text-white">Security Comparison</th>
+                            <th class="py-4 px-4 font-bold text-center text-red-400">Cloud Managers (LastPass / 1Pass)</th>
+                            <th class="py-4 px-4 font-bold text-center text-brand-light bg-brand/10 rounded-2xl">MyPass Vault (100% Offline)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-brand/10 text-gray-300">
+                        <tr>
+                            <td class="py-4 px-4 font-semibold">Remote Cloud Server Breach Risk</td>
+                            <td class="py-4 px-4 text-center text-red-400 font-bold"><i class="fas fa-triangle-exclamation mr-1.5"></i> High (Server Vulnerability)</td>
+                            <td class="py-4 px-4 text-center text-emerald-400 font-bold bg-brand/5"><i class="fas fa-shield-check mr-1.5"></i> 0% (No Cloud / No Servers)</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-semibold">Monthly / Annual Subscription</td>
+                            <td class="py-4 px-4 text-center text-gray-400 font-medium">$3 to $12 / month</td>
+                            <td class="py-4 px-4 text-center text-emerald-400 font-bold bg-brand/5"><i class="fas fa-check-circle mr-1.5"></i> 100% Free Forever</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-semibold">Offline 2FA / TOTP Authenticator</td>
+                            <td class="py-4 px-4 text-center text-gray-400">Paid Add-on or Cloud Sync</td>
+                            <td class="py-4 px-4 text-center text-emerald-400 font-bold bg-brand/5"><i class="fas fa-check-circle mr-1.5"></i> Built-in Offline RFC 6238</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-semibold">Decoy / Duress PIN (Fake Vault)</td>
+                            <td class="py-4 px-4 text-center text-red-400"><i class="fas fa-xmark"></i> Not Available</td>
+                            <td class="py-4 px-4 text-center text-emerald-400 font-bold bg-brand/5"><i class="fas fa-check-circle mr-1.5"></i> Built-in Fake Vault Protection</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-semibold">Encrypted Personal Diary / Notes</td>
+                            <td class="py-4 px-4 text-center text-gray-400">Basic Text Fields</td>
+                            <td class="py-4 px-4 text-center text-emerald-400 font-bold bg-brand/5"><i class="fas fa-check-circle mr-1.5"></i> Rich Markdown + Color Tags</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-semibold">Centralized 30-Day Trash Bin</td>
+                            <td class="py-4 px-4 text-center text-gray-400">Immediate Permanent Delete</td>
+                            <td class="py-4 px-4 text-center text-emerald-400 font-bold bg-brand/5"><i class="fas fa-check-circle mr-1.5"></i> Safe Dual-Tab Recycle Bin</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Unified Screenshot Gallery: Android & Windows -->
+    <section id="screenshots" class="py-24 border-t border-brand/10 bg-brand-card/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-brand-light text-xs font-black tracking-widest uppercase bg-brand/15 border border-brand/30 px-3.5 py-1 rounded-full">App Interface</span>
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl mt-3 mb-4">
+                    Take a Look Inside the Vault
+                </h2>
+                <p class="text-base text-gray-400">
+                    Sleek, intuitive, and modern UI crafted for both Android mobile users and Windows desktop power users.
+                </p>
+            </div>
+
+            <!-- SECTION 1: ANDROID APP SCREENSHOTS -->
+            <div class="mb-16">
+                <div class="flex items-center space-x-3 mb-8">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl">
+                        <i class="fab fa-android"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Android Mobile App Experience</h3>
+                        <p class="text-xs text-gray-400">Fingerprint biometric unlock, Autofill service, and quick search.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Screen 1 -->
+                    <div class="bg-brand-card border border-brand/15 rounded-3xl p-4 flex flex-col items-center shadow-lg hover:border-brand/40 transition">
+                        <div class="w-full bg-slate-950 aspect-[9/16] rounded-2xl border-2 border-slate-800 shadow-md flex items-center justify-center overflow-hidden">
+                            <img src="assets/mypass_signup_screen.png" alt="Login Screen" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xs font-bold text-gray-200 mt-3.5">Setup & Master Gate</span>
+                    </div>
+                    <!-- Screen 2 -->
+                    <div class="bg-brand-card border border-brand/15 rounded-3xl p-4 flex flex-col items-center shadow-lg hover:border-brand/40 transition">
+                        <div class="w-full bg-slate-950 aspect-[9/16] rounded-2xl border-2 border-slate-800 shadow-md flex items-center justify-center overflow-hidden">
+                            <img src="assets/mypass_dashboard.png" alt="Vault Dashboard" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xs font-bold text-gray-200 mt-3.5">Vault & Category Filters</span>
+                    </div>
+                    <!-- Screen 3 -->
+                    <div class="bg-brand-card border border-brand/15 rounded-3xl p-4 flex flex-col items-center shadow-lg hover:border-brand/40 transition">
+                        <div class="w-full bg-slate-950 aspect-[9/16] rounded-2xl border-2 border-slate-800 shadow-md flex items-center justify-center overflow-hidden">
+                            <img src="assets/mypass_diary.png" alt="Secure Diary" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xs font-bold text-gray-200 mt-3.5">Secure Encrypted Diary</span>
+                    </div>
+                    <!-- Screen 4 -->
+                    <div class="bg-brand-card border border-brand/15 rounded-3xl p-4 flex flex-col items-center shadow-lg hover:border-brand/40 transition">
+                        <div class="w-full bg-slate-950 aspect-[9/16] rounded-2xl border-2 border-slate-800 shadow-md flex items-center justify-center overflow-hidden">
+                            <img src="assets/mypass_settings.png" alt="Settings & Tools" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xs font-bold text-gray-200 mt-3.5">Settings & Security Audit</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: WINDOWS DESKTOP SOFTWARE (.EXE) SCREENSHOTS -->
+            <div class="pt-10 border-t border-brand/10">
+                <div class="flex items-center space-x-3 mb-8">
+                    <div class="w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xl">
+                        <i class="fab fa-windows"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Windows Desktop Software (MyPass.exe)</h3>
+                        <p class="text-xs text-gray-400">Physical keyboard PIN unlock, desktop QR importer, and offline backups.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Desktop Mock 1: Physical Keyboard PIN Unlock Window -->
+                    <div class="bg-brand-card border border-brand/20 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
+                        <div class="w-full bg-slate-950 rounded-2xl border-2 border-slate-800 shadow-md overflow-hidden flex flex-col">
+                            <div class="bg-slate-900 px-3 py-2 border-b border-brand/20 flex items-center justify-between text-[11px] text-gray-400">
+                                <span class="flex items-center space-x-1.5 font-bold text-gray-300">
+                                    <img src="assets/app_icon.png" class="w-3.5 h-3.5 rounded">
+                                    <span>MyPass - Unlock Gate</span>
+                                </span>
+                                <div class="flex space-x-1.5 text-[9px]"><span>—</span><span>□</span><span class="text-red-400">✕</span></div>
+                            </div>
+                            <div class="p-6 bg-[#0A0E21] flex flex-col items-center text-center space-y-3">
+                                <div class="w-14 h-14 rounded-full bg-brand/20 border border-brand/40 flex items-center justify-center text-brand-light text-2xl shadow-lg">
+                                    <i class="fas fa-shield-halved"></i>
+                                </div>
+                                <div class="text-sm font-bold text-white">Welcome back, Admin</div>
+                                <div class="text-[11px] text-[#90CAF9]">Type PIN or Master Password on keyboard</div>
+                                <div class="w-full bg-[#141B34] border border-brand/40 py-2.5 px-3 rounded-xl text-center text-sm font-mono font-bold tracking-widest text-brand-light flex items-center justify-between">
+                                    <i class="fas fa-lock text-xs text-brand"></i>
+                                    <span>••••</span>
+                                    <i class="fas fa-eye text-xs text-gray-400"></i>
+                                </div>
+                                <button class="w-full bg-brand hover:bg-brand-light text-white py-2 rounded-xl text-xs font-bold shadow">Unlock Vault (Press Enter)</button>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <span class="text-sm font-bold text-white">Native Physical Keyboard Login</span>
+                            <p class="text-xs text-gray-400 mt-1">Instant autofocus typing with zero clutter.</p>
+                        </div>
+                    </div>
+
+                    <!-- Desktop Mock 2: Full Width Categories Dashboard Window -->
+                    <div class="bg-brand-card border border-brand/20 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
+                        <div class="w-full bg-slate-950 rounded-2xl border-2 border-slate-800 shadow-md overflow-hidden flex flex-col">
+                            <div class="bg-slate-900 px-3 py-2 border-b border-brand/20 flex items-center justify-between text-[11px] text-gray-400">
+                                <span class="flex items-center space-x-1.5 font-bold text-gray-300">
+                                    <img src="assets/app_icon.png" class="w-3.5 h-3.5 rounded">
+                                    <span>MyPass - Passwords Vault</span>
+                                </span>
+                                <div class="flex space-x-1.5 text-[9px]"><span>—</span><span>□</span><span class="text-red-400">✕</span></div>
+                            </div>
+                            <div class="p-4 bg-[#0A0E21] space-y-2.5">
+                                <div class="bg-[#141B34] px-3 py-1.5 rounded-lg border border-brand/20 text-[10px] text-gray-400 flex items-center">
+                                    <i class="fas fa-search mr-2 text-brand-light"></i>Search vault credentials...
+                                </div>
+                                <div class="grid grid-cols-3 gap-1 text-[9px] text-center font-bold">
+                                    <div class="bg-brand text-white py-1 rounded">All</div>
+                                    <div class="bg-[#141B34] text-gray-400 py-1 rounded border border-brand/20">General</div>
+                                    <div class="bg-[#141B34] text-gray-400 py-1 rounded border border-brand/20">Banking</div>
+                                    <div class="bg-[#141B34] text-gray-400 py-1 rounded border border-brand/20">Social</div>
+                                    <div class="bg-[#141B34] text-gray-400 py-1 rounded border border-brand/20">Work</div>
+                                    <div class="bg-[#141B34] text-gray-400 py-1 rounded border border-brand/20">Email</div>
+                                </div>
+                                <div class="space-y-1.5 pt-1">
+                                    <div class="bg-[#141B34] p-2 rounded-lg border border-brand/10 flex items-center justify-between text-xs">
+                                        <span class="font-bold text-white">Google Workspace</span>
+                                        <span class="text-[9px] px-1.5 py-0.5 rounded bg-brand/20 text-brand-light font-bold">2FA Active</span>
+                                    </div>
+                                    <div class="bg-[#141B34] p-2 rounded-lg border border-brand/10 flex items-center justify-between text-xs">
+                                        <span class="font-bold text-white">HDFC NetBanking</span>
+                                        <i class="fas fa-key text-brand-light"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <span class="text-sm font-bold text-white">Full-Width Category Dashboard</span>
+                            <p class="text-xs text-gray-400 mt-1">Organize banking, work, and social accounts effortlessly.</p>
+                        </div>
+                    </div>
+
+                    <!-- Desktop Mock 3: Secure Diary Window -->
+                    <div class="bg-brand-card border border-brand/20 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
+                        <div class="w-full bg-slate-950 rounded-2xl border-2 border-slate-800 shadow-md overflow-hidden flex flex-col">
+                            <div class="bg-slate-900 px-3 py-2 border-b border-brand/20 flex items-center justify-between text-[11px] text-gray-400">
+                                <span class="flex items-center space-x-1.5 font-bold text-gray-300">
+                                    <img src="assets/app_icon.png" class="w-3.5 h-3.5 rounded">
+                                    <span>MyPass - Encrypted Diary</span>
+                                </span>
+                                <div class="flex space-x-1.5 text-[9px]"><span>—</span><span>□</span><span class="text-red-400">✕</span></div>
+                            </div>
+                            <div class="p-4 bg-[#0A0E21] space-y-2.5">
+                                <div class="bg-[#141B34] p-3 rounded-xl border border-brand/20 space-y-1">
+                                    <div class="flex items-center justify-between">
+                                        <div class="text-xs font-bold text-white">Crypto Wallet Seed Phrases</div>
+                                        <span class="text-[9px] text-[#90CAF9]">05 Sep 2026</span>
+                                    </div>
+                                    <div class="text-[10px] text-gray-400">Encrypted backup seed keys for Bitcoin/Solana storage...</div>
+                                </div>
+                                <div class="bg-[#141B34] p-3 rounded-xl border border-brand/20 space-y-1">
+                                    <div class="flex items-center justify-between">
+                                        <div class="text-xs font-bold text-white">Production Server SSH Keys</div>
+                                        <span class="text-[9px] text-[#90CAF9]">01 Sep 2026</span>
+                                    </div>
+                                    <div class="text-[10px] text-gray-400">Root keys, SSH credentials, and IP endpoints...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <span class="text-sm font-bold text-white">Encrypted Private Diary</span>
+                            <p class="text-xs text-gray-400 mt-1">Keep confidential logs and recovery keys secure on PC.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section (Frequently Asked Questions) -->
+    <section id="faq" class="py-24 border-t border-brand/10 bg-brand-card/10">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-brand-light text-xs font-black tracking-widest uppercase bg-brand/15 border border-brand/30 px-3.5 py-1 rounded-full">Got Questions?</span>
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl mt-3 mb-4">
+                    Frequently Asked Questions
+                </h2>
+                <p class="text-base text-gray-400">
+                    Everything you need to know about MyPass Vault offline security model.
+                </p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Q1 -->
+                <div class="bg-brand-card border border-brand/15 rounded-2xl p-6 transition">
+                    <h3 class="text-base font-bold text-white flex items-center">
+                        <i class="fas fa-circle-question text-brand-light mr-3"></i>
+                        Is MyPass Vault truly 100% offline without internet?
+                    </h3>
+                    <p class="text-sm text-gray-400 mt-3 leading-relaxed pl-7">
+                        Yes! MyPass Vault does not connect to any remote server, cloud API, or third-party database. All passwords, 2FA tokens, and diary logs are encrypted locally on your physical hardware using AES-256 bit encryption.
+                    </p>
+                </div>
+
+                <!-- Q2 -->
+                <div class="bg-brand-card border border-brand/15 rounded-2xl p-6 transition">
+                    <h3 class="text-base font-bold text-white flex items-center">
+                        <i class="fas fa-circle-question text-teal-400 mr-3"></i>
+                        How does the 2FA / TOTP Authenticator generate codes offline?
+                    </h3>
+                    <p class="text-sm text-gray-400 mt-3 leading-relaxed pl-7">
+                        The RFC 6238 TOTP algorithm uses the standard mathematical combination of your secret key and the local system clock timestamp. Because time is calculated locally by your CPU, no internet or cellular network connection is needed.
+                    </p>
+                </div>
+
+                <!-- Q3 -->
+                <div class="bg-brand-card border border-brand/15 rounded-2xl p-6 transition">
+                    <h3 class="text-base font-bold text-white flex items-center">
+                        <i class="fas fa-circle-question text-amber-400 mr-3"></i>
+                        How does the 30-Day Trash Bin work?
+                    </h3>
+                    <p class="text-sm text-gray-400 mt-3 leading-relaxed pl-7">
+                        When you delete a password or diary note, it is moved to the centralized Trash bin instead of being permanently lost immediately. You can restore it at any time. Any item remaining in Trash for over 30 days is automatically purged permanently.
+                    </p>
+                </div>
+
+                <!-- Q4 -->
+                <div class="bg-brand-card border border-brand/15 rounded-2xl p-6 transition">
+                    <h3 class="text-base font-bold text-white flex items-center">
+                        <i class="fas fa-circle-question text-rose-400 mr-3"></i>
+                        What is the Decoy / Duress PIN (Fake Vault)?
+                    </h3>
+                    <p class="text-sm text-gray-400 mt-3 leading-relaxed pl-7">
+                        In settings, you can configure a secondary Decoy MPIN. If someone physically forces you to unlock your vault, entering the Decoy PIN opens an empty fake vault, ensuring your real confidential passwords remain completely invisible and protected.
+                    </p>
+                </div>
+
+                <!-- Q5 -->
+                <div class="bg-brand-card border border-brand/15 rounded-2xl p-6 transition">
+                    <h3 class="text-base font-bold text-white flex items-center">
+                        <i class="fas fa-circle-question text-cyan-400 mr-3"></i>
+                        How can I backup or transfer data between PC and Android?
+                    </h3>
+                    <p class="text-sm text-gray-400 mt-3 leading-relaxed pl-7">
+                        You can export your database anytime into a password-protected <code class="text-brand-light">.mypass</code> file from Settings. You can transfer this encrypted file via USB, local Wi-Fi, or pendrive and import it into either the Windows Desktop app or Android app.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="py-24 border-t border-brand/10 bg-gradient-to-b from-brand-card/30 to-brand-bg relative">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <span class="text-brand-light text-xs font-black tracking-widest uppercase bg-brand/15 border border-brand/30 px-3.5 py-1 rounded-full">Get Started Today</span>
+            <h2 class="text-4xl font-black text-white mt-3 mb-4">
+                Download MyPass Vault (Free & Offline)
+            </h2>
+            <p class="text-base sm:text-lg text-gray-400 mb-14 max-w-2xl mx-auto">
+                No credit cards, no account registration, and zero cloud tracking. Download the official installer or APK package directly.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto text-left">
+                <!-- Windows Card -->
+                <div class="bg-brand-card border-2 border-brand/30 hover:border-brand p-8 rounded-3xl shadow-2xl flex flex-col justify-between transition glow-purple">
+                    <div>
+                        <div class="flex items-center space-x-4 mb-5">
+                            <div class="w-14 h-14 bg-blue-500/20 border border-blue-500/30 rounded-2xl flex items-center justify-center text-blue-400 text-3xl">
+                                <i class="fab fa-windows"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-black text-white">For Windows</h3>
+                                <span class="text-xs text-brand-light font-bold">Windows 11 & 10 (64-bit Native)</span>
+                            </div>
+                        </div>
+                        <ul class="text-xs text-gray-300 space-y-2.5 mb-8">
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-400 mr-2"></i> Physical Keyboard Direct Unlock</li>
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-400 mr-2"></i> Full 2FA Authenticator & TOTP Engine</li>
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-400 mr-2"></i> Desktop QR & Wi-Fi Image Importer</li>
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-400 mr-2"></i> 1-Click Setup Installer (~10.5 MB)</li>
+                        </ul>
+                    </div>
+                    <a href="downloads/MyPass_Setup.exe" download class="w-full flex items-center justify-center bg-gradient-to-r from-brand to-purple-600 hover:from-brand-light hover:to-purple-500 text-white font-bold py-4 px-6 rounded-2xl shadow-lg shadow-brand/40 transition">
+                        <i class="fas fa-download mr-2.5"></i> Download MyPass_Setup.exe
+                    </a>
+                </div>
+
+                <!-- Android Card -->
+                <div class="bg-brand-card border-2 border-brand/30 hover:border-brand p-8 rounded-3xl shadow-2xl flex flex-col justify-between transition glow-purple">
+                    <div>
+                        <div class="flex items-center space-x-4 mb-5">
+                            <div class="w-14 h-14 bg-emerald-500/20 border border-emerald-500/30 rounded-2xl flex items-center justify-center text-emerald-400 text-3xl">
+                                <i class="fab fa-android"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-black text-white">For Android</h3>
+                                <span class="text-xs text-brand-light font-bold">Android 9.0 & Above (APK)</span>
+                            </div>
+                        </div>
+                        <ul class="text-xs text-gray-300 space-y-2.5 mb-8">
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-400 mr-2"></i> Native Biometric Fingerprint Unlock</li>
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-400 mr-2"></i> System Autofill Service Integration</li>
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-400 mr-2"></i> Live Camera QR & Wi-Fi Scanner</li>
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-400 mr-2"></i> Official APK Package (~66.5 MB)</li>
+                        </ul>
+                    </div>
+                    <a href="downloads/app-release.apk" download class="w-full flex items-center justify-center bg-brand-surface hover:bg-brand/30 border border-brand/40 text-white font-bold py-4 px-6 rounded-2xl transition">
+                        <i class="fas fa-download mr-2.5 text-brand-light"></i> Download app-release.apk
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-brand/20 bg-[#0A0E21] py-14 text-gray-500 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between">
+            <div class="flex items-center space-x-3 mb-6 md:mb-0">
+                <img src="assets/app_icon.png" alt="MyPass Logo" class="w-9 h-9 rounded-xl border border-brand/30">
+                <div>
+                    <span class="font-extrabold text-white text-base">MyPass Vault</span>
+                    <p class="text-[11px] text-gray-400">100% Offline • AES-256 Hardened</p>
+                </div>
+            </div>
+            <div class="flex space-x-8 mb-6 md:mb-0 text-xs font-semibold text-gray-400">
+                <a href="#features" class="hover:text-white transition">Features</a>
+                <a href="#totp" class="hover:text-white transition">2FA Authenticator</a>
+                <a href="#comparison" class="hover:text-white transition">Why Offline?</a>
+                <a href="#screenshots" class="hover:text-white transition">Screenshots</a>
+                <a href="#faq" class="hover:text-white transition">FAQ</a>
+                <a href="privacy.html" class="hover:text-white transition">Privacy Policy</a>
+            </div>
+            <div>
+                <p class="text-xs">&copy; 2026 MyPass Vault. All rights reserved. Zero Cloud & Privacy by Design.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
