@@ -39,8 +39,22 @@
                               linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
         }
     </style>
+    <!-- Liquid Glass 3D UI & Three.js Libraries -->
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
-<body class="bg-[#0A0E21] text-white font-sans scroll-smooth bg-grid">
+<body class="bg-[#0A0E21] text-white font-sans scroll-smooth bg-grid relative">
+
+    <!-- Ambient Morphing Background Blobs & SVG Noise Texture -->
+    <div id="liquid-glass-background-fx" aria-hidden="true">
+        <div class="ambient-blob blob-purple"></div>
+        <div class="ambient-blob blob-cyan"></div>
+        <div class="ambient-blob blob-light-purple"></div>
+        <div class="svg-noise-overlay"></div>
+    </div>
+
+    <!-- Cursor Spotlight Aura -->
+    <div id="cursor-spotlight-aura" aria-hidden="true"></div>
 
     <!-- Header / Navbar -->
     <header class="sticky top-0 z-50 bg-[#0A0E21]/90 backdrop-blur-md border-b border-brand/20">
@@ -123,9 +137,18 @@
                 </div>
 
                 <!-- Interactive Hero Mockup Column -->
-                <div class="mt-12 sm:mt-16 lg:mt-0 lg:col-span-5 flex justify-center relative">
+                <div class="mt-12 sm:mt-16 lg:mt-0 lg:col-span-5 flex flex-col items-center justify-center relative">
                     <div class="absolute -inset-4 bg-gradient-to-tr from-brand/30 via-purple-600/20 to-teal-500/20 blur-3xl rounded-full"></div>
                     
+                    <!-- Interactive 3D Frosted Glass Padlock Visual (Three.js) -->
+                    <div id="hero-padlock-container">
+                        <canvas id="padlock-canvas"></canvas>
+                        <div class="padlock-hint-badge">
+                            <span class="padlock-pulse-dot"></span>
+                            <span>Interactive 3D Glass Padlock • Drag to Rotate</span>
+                        </div>
+                    </div>
+
                     <!-- Mobile Device Outer Container -->
                     <div class="relative w-80 h-[610px] bg-slate-950 rounded-[48px] border-[10px] border-slate-800 shadow-2xl overflow-hidden flex flex-col justify-between glow-purple">
                         <!-- Top Notch & Header -->
@@ -738,6 +761,9 @@
             </div>
         </div>
     </footer>
+
+    <!-- 3D Physics, Specular Glare & Liquid Glass Engine -->
+    <script src="physics.js"></script>
 
 </body>
 </html>
