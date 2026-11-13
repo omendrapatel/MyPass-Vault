@@ -44,8 +44,8 @@
 
 | Platform | Download Link | Version |
 | :--- | :--- | :--- |
-| **🤖 Android** | [Download app-release.apk](downloads/app-release.apk) | v2.0 (Latest) |
-| **💻 Windows** | [Download MyPass_Windows_v2.0.zip](downloads/MyPass_Windows_v2.0.zip) | v2.0 (Latest Portable) |
+| **🤖 Android** | [Download app-release.apk](downloads/app-release.apk) | v2.0 (Official APK) |
+| **💻 Windows** | [Download MyPass_Setup.exe](downloads/MyPass_Setup.exe) | v2.0 (Official Setup Installer) |
 
 ---
 
