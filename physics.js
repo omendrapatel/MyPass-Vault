@@ -1,20 +1,18 @@
 /**
- * MyPass Vault — 60fps 3D Physics & Liquid Glass Interactivity Engine
- * 1. Physics-based cursor-trailing 3D Tilt & Specular Glare (lerp ~0.11)
- * 2. Global Cursor Spotlight Aura
- * 3. Magnetic 3D Pull & Tilt on Buttons
- * 4. Interactive 3D Frosted Glass Padlock Visual (Three.js)
+ * MyPass Vault — Stealth Obsidian 2026 Engine
+ * 1. 60fps Lerp-Inertia Physics-Based Tilt (lerp ~0.11)
+ * 2. High-Precision Specular Glare (Polished Obsidian Catch)
+ * 3. Minimalist Ambient Cursor Spotlight
+ * 4. Three.js 3D Smoked Obsidian & Titanium Padlock Visual
  */
 
 (function () {
     'use strict';
 
-    // Helper: Standard linear interpolation
     function lerp(start, end, factor) {
         return start + (end - start) * factor;
     }
 
-    // Touch device detection: disable mouse hover physics on touch devices
     const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
     /* ==========================================================================
@@ -44,20 +42,18 @@
     }
 
     /* ==========================================================================
-       2. PHYSICS-BASED CURSOR-TRAILING 3D TILT & SPECULAR GLARE ENGINE
+       2. PRECISION 3D TILT & SPECULAR GLARE ENGINE
        ========================================================================== */
     const cardElements = document.querySelectorAll('.bg-brand-card, .bg-brand-surface');
     const tiltCards = [];
 
     if (!isTouchDevice && cardElements.length > 0) {
         cardElements.forEach(function (card) {
-            // Ensure card has relative positioning
             const computedStyle = window.getComputedStyle(card);
             if (computedStyle.position === 'static') {
                 card.style.position = 'relative';
             }
 
-            // Create and append specular glare element
             let glare = card.querySelector('.card-specular-glare');
             if (!glare) {
                 glare = document.createElement('div');
@@ -68,14 +64,12 @@
             const state = {
                 el: card,
                 glareEl: glare,
-                // Current animated values (lerped)
                 currRotX: 0,
                 currRotY: 0,
                 currTransZ: 0,
                 currGlareX: 50,
                 currGlareY: 50,
                 currGlareOpacity: 0,
-                // Target values
                 targetRotX: 0,
                 targetRotY: 0,
                 targetTransZ: 0,
@@ -87,8 +81,8 @@
 
             card.addEventListener('mouseenter', function () {
                 state.isHovered = true;
-                state.targetTransZ = 12;
-                state.targetGlareOpacity = 0.85;
+                state.targetTransZ = 8;
+                state.targetGlareOpacity = 0.7;
             });
 
             card.addEventListener('mousemove', function (e) {
@@ -98,18 +92,17 @@
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
 
-                // Max tilt angle: ±12 degrees
-                const rotY = ((offsetX - centerX) / centerX) * 12;
-                const rotX = -((offsetY - centerY) / centerY) * 12;
+                // Subtle, elegant tilt: max ±8 degrees (not extreme)
+                const rotY = ((offsetX - centerX) / centerX) * 8;
+                const rotX = -((offsetY - centerY) / centerY) * 8;
 
                 state.targetRotX = rotX;
                 state.targetRotY = rotY;
-                state.targetTransZ = 14;
+                state.targetTransZ = 10;
 
-                // Glare percentage
                 state.targetGlareX = (offsetX / rect.width) * 100;
                 state.targetGlareY = (offsetY / rect.height) * 100;
-                state.targetGlareOpacity = 0.85;
+                state.targetGlareOpacity = 0.75;
             }, { passive: true });
 
             card.addEventListener('mouseleave', function () {
@@ -125,7 +118,7 @@
     }
 
     /* ==========================================================================
-       3. MAGNETIC 3D PULL & TILT ON BUTTONS
+       3. MAGNETIC BUTTON PULL
        ========================================================================== */
     const buttonElements = document.querySelectorAll('a[href="#download"], a.bg-gradient-to-r, a.bg-brand, .magnetic-btn');
     const magneticButtons = [];
@@ -146,16 +139,15 @@
 
             btn.addEventListener('mouseenter', function () {
                 bState.isHovered = true;
-                bState.targetScale = 1.03;
+                bState.targetScale = 1.025;
             });
 
             btn.addEventListener('mousemove', function (e) {
                 const rect = btn.getBoundingClientRect();
                 const centerX = rect.left + rect.width / 2;
                 const centerY = rect.top + rect.height / 2;
-                // Pull offset capped at ±8px
-                bState.targetX = Math.max(-8, Math.min(8, (e.clientX - centerX) * 0.28));
-                bState.targetY = Math.max(-8, Math.min(8, (e.clientY - centerY) * 0.28));
+                bState.targetX = Math.max(-6, Math.min(6, (e.clientX - centerX) * 0.22));
+                bState.targetY = Math.max(-6, Math.min(6, (e.clientY - centerY) * 0.22));
             }, { passive: true });
 
             btn.addEventListener('mouseleave', function () {
@@ -172,19 +164,17 @@
     /* ==========================================================================
        MAIN 60FPS PHYSICS RENDER LOOP
        ========================================================================== */
-    const LERP_FACTOR = 0.11; // requested lerp inertia ~0.11
+    const LERP_FACTOR = 0.11;
     const SPOT_LERP = 0.09;
     const BTN_LERP = 0.12;
 
     function renderPhysics() {
-        // 1. Update Global Cursor Spotlight
         if (spotlight && isMouseActive) {
             spotCurrentX = lerp(spotCurrentX, mouseX, SPOT_LERP);
             spotCurrentY = lerp(spotCurrentY, mouseY, SPOT_LERP);
             spotlight.style.transform = 'translate3d(' + spotCurrentX.toFixed(1) + 'px, ' + spotCurrentY.toFixed(1) + 'px, 0)';
         }
 
-        // 2. Update Card 3D Tilts with Inertia
         for (let i = 0; i < tiltCards.length; i++) {
             const card = tiltCards[i];
             card.currRotX = lerp(card.currRotX, card.targetRotX, LERP_FACTOR);
@@ -194,17 +184,15 @@
             card.currGlareY = lerp(card.currGlareY, card.targetGlareY, LERP_FACTOR);
             card.currGlareOpacity = lerp(card.currGlareOpacity, card.targetGlareOpacity, LERP_FACTOR);
 
-            // Apply 3D perspective transform
             card.el.style.transform = 'perspective(1000px) rotateX(' + card.currRotX.toFixed(2) + 'deg) rotateY(' + card.currRotY.toFixed(2) + 'deg) translateZ(' + card.currTransZ.toFixed(2) + 'px)';
 
-            // Update internal specular glare
             if (card.glareEl) {
-                card.glareEl.style.background = 'radial-gradient(circle at ' + card.currGlareX.toFixed(1) + '% ' + card.currGlareY.toFixed(1) + '%, rgba(255, 255, 255, 0.22) 0%, rgba(0, 210, 211, 0.12) 28%, transparent 68%)';
+                // Polished dark metallic sheen (subtle white reflection)
+                card.glareEl.style.background = 'radial-gradient(circle at ' + card.currGlareX.toFixed(1) + '% ' + card.currGlareY.toFixed(1) + '%, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.02) 28%, transparent 68%)';
                 card.glareEl.style.opacity = card.currGlareOpacity.toFixed(3);
             }
         }
 
-        // 3. Update Magnetic Buttons
         for (let j = 0; j < magneticButtons.length; j++) {
             const btn = magneticButtons[j];
             btn.currX = lerp(btn.currX, btn.targetX, BTN_LERP);
@@ -221,20 +209,19 @@
     }
 
     /* ==========================================================================
-       4. INTERACTIVE 3D FROSTED GLASS PADLOCK VISUAL (THREE.JS)
+       4. INTERACTIVE 3D SMOKED OBSIDIAN & TITANIUM PADLOCK (THREE.JS)
        ========================================================================== */
     function initThreePadlock() {
         const container = document.getElementById('hero-padlock-container');
         const canvas = document.getElementById('padlock-canvas');
         if (!container || !canvas || typeof THREE === 'undefined') return;
 
-        // Scene, Camera, Renderer
         const scene = new THREE.Scene();
         const initialWidth = container.clientWidth || 280;
         const initialHeight = container.clientHeight || 210;
 
-        const camera = new THREE.PerspectiveCamera(40, initialWidth / initialHeight, 0.1, 100);
-        camera.position.set(0, 0, 4.6);
+        const camera = new THREE.PerspectiveCamera(38, initialWidth / initialHeight, 0.1, 100);
+        camera.position.set(0, 0, 4.8);
 
         const renderer = new THREE.WebGLRenderer({
             canvas: canvas,
@@ -245,151 +232,135 @@
         renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
         renderer.setSize(initialWidth, initialHeight);
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.25;
+        renderer.toneMappingExposure = 1.15;
 
-        // Master Group for Padlock
         const padlockGroup = new THREE.Group();
         scene.add(padlockGroup);
 
-        // --- Materials ---
-        // Frosted Liquid Glass Body
-        const glassMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0x8F82FF, // Brand light
-            metalness: 0.04,
-            roughness: 0.18, // Frosted liquid glass
-            transmission: 0.92, // Glass refraction
-            thickness: 1.2,
-            ior: 1.52, // Standard glass IOR
-            reflectivity: 0.85,
+        // --- Materials: Smoked Obsidian & Brushed Aerospace Titanium ---
+        const smokedObsidianMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0x1A1D27, // Smoked dark obsidian
+            metalness: 0.2,
+            roughness: 0.12, // Polished crystalline surface
+            transmission: 0.72, // Elegant dark translucent refraction
+            thickness: 1.1,
+            ior: 1.54,
+            reflectivity: 0.9,
             clearcoat: 1.0,
-            clearcoatRoughness: 0.1,
-            transparent: true,
-            opacity: 0.94
-        });
-
-        // Semi-translucent Shackle
-        const shackleMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0xE0E7FF,
-            metalness: 0.82,
-            roughness: 0.16,
-            clearcoat: 1.0,
-            clearcoatRoughness: 0.08,
-            transmission: 0.3,
+            clearcoatRoughness: 0.05,
             transparent: true,
             opacity: 0.96
         });
 
-        // Glowing Inner Security Core (Matches existing Accent #00D2D3)
+        const titaniumShackleMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0xF8FAFC, // Clean aerospace silver chrome
+            metalness: 0.95,
+            roughness: 0.08,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.04
+        });
+
+        // Cryptographic Emerald Core (Swiss-bank security feel)
         const coreMaterial = new THREE.MeshStandardMaterial({
-            color: 0x00D2D3,
-            emissive: 0x00D2D3,
-            emissiveIntensity: 2.2,
-            roughness: 0.12,
-            metalness: 0.4
+            color: 0x10B981,
+            emissive: 0x10B981,
+            emissiveIntensity: 2.4,
+            roughness: 0.1,
+            metalness: 0.5
         });
 
         // --- Geometries ---
         // 1. Padlock Body
         const bodyGeom = new THREE.BoxGeometry(1.65, 1.4, 0.72, 4, 4, 4);
-        const bodyMesh = new THREE.Mesh(bodyGeom, glassMaterial);
+        const bodyMesh = new THREE.Mesh(bodyGeom, smokedObsidianMaterial);
         bodyMesh.position.set(0, -0.18, 0);
         padlockGroup.add(bodyMesh);
 
-        // 2. Padlock Shackle
+        // 2. Titanium Shackle
         const shackleGroup = new THREE.Group();
-        // Top U-arch
-        const archGeom = new THREE.TorusGeometry(0.5, 0.13, 24, 48, Math.PI);
-        const archMesh = new THREE.Mesh(archGeom, shackleMaterial);
+        const archGeom = new THREE.TorusGeometry(0.5, 0.125, 24, 48, Math.PI);
+        const archMesh = new THREE.Mesh(archGeom, titaniumShackleMaterial);
         archMesh.position.set(0, 0.54, 0);
         shackleGroup.add(archMesh);
 
-        // Left vertical leg
-        const legGeom = new THREE.CylinderGeometry(0.13, 0.13, 0.62, 24);
-        const leftLeg = new THREE.Mesh(legGeom, shackleMaterial);
+        const legGeom = new THREE.CylinderGeometry(0.125, 0.125, 0.62, 24);
+        const leftLeg = new THREE.Mesh(legGeom, titaniumShackleMaterial);
         leftLeg.position.set(-0.5, 0.23, 0);
         shackleGroup.add(leftLeg);
 
-        // Right vertical leg
-        const rightLeg = new THREE.Mesh(legGeom, shackleMaterial);
+        const rightLeg = new THREE.Mesh(legGeom, titaniumShackleMaterial);
         rightLeg.position.set(0.5, 0.23, 0);
         shackleGroup.add(rightLeg);
 
         padlockGroup.add(shackleGroup);
 
-        // 3. Inner Glowing Core
+        // 3. Cryptographic Core
         const coreGeom = new THREE.OctahedronGeometry(0.32, 1);
         const coreMesh = new THREE.Mesh(coreGeom, coreMaterial);
         coreMesh.position.set(0, -0.18, 0);
         padlockGroup.add(coreMesh);
 
-        // Inner Point Light
-        const innerLight = new THREE.PointLight(0x00D2D3, 3.6, 5);
+        const innerLight = new THREE.PointLight(0x10B981, 3.8, 5);
         innerLight.position.set(0, -0.18, 0);
         padlockGroup.add(innerLight);
 
-        // 4. Subtle Keyhole Detail
+        // 4. Precision Keyhole
         const keyholeGroup = new THREE.Group();
-        const khCircleGeom = new THREE.CircleGeometry(0.1, 24);
-        const khSlotGeom = new THREE.PlaneGeometry(0.08, 0.2);
-        const khMat = new THREE.MeshBasicMaterial({ color: 0x0A0E21 });
+        const khCircleGeom = new THREE.CircleGeometry(0.09, 24);
+        const khSlotGeom = new THREE.PlaneGeometry(0.07, 0.18);
+        const khMat = new THREE.MeshBasicMaterial({ color: 0x050608 });
         const khCircle = new THREE.Mesh(khCircleGeom, khMat);
         const khSlot = new THREE.Mesh(khSlotGeom, khMat);
-        khSlot.position.set(0, -0.09, 0);
+        khSlot.position.set(0, -0.08, 0);
         keyholeGroup.add(khCircle);
         keyholeGroup.add(khSlot);
         keyholeGroup.position.set(0, -0.15, 0.37);
         padlockGroup.add(keyholeGroup);
 
-        // 5. Orbiting Cyber Rings
-        const ringGeom1 = new THREE.TorusGeometry(1.22, 0.014, 16, 64);
-        const ringMat1 = new THREE.MeshBasicMaterial({ color: 0x00D2D3, transparent: true, opacity: 0.55 });
+        // 5. Subtle Titanium Orbit Ring
+        const ringGeom1 = new THREE.TorusGeometry(1.22, 0.012, 16, 64);
+        const ringMat1 = new THREE.MeshBasicMaterial({ color: 0x38BDF8, transparent: true, opacity: 0.35 });
         const ringMesh1 = new THREE.Mesh(ringGeom1, ringMat1);
         ringMesh1.rotation.x = Math.PI / 3;
         padlockGroup.add(ringMesh1);
 
-        const ringGeom2 = new THREE.TorusGeometry(1.36, 0.014, 16, 64);
-        const ringMat2 = new THREE.MeshBasicMaterial({ color: 0x8F82FF, transparent: true, opacity: 0.45 });
-        const ringMesh2 = new THREE.Mesh(ringGeom2, ringMat2);
-        ringMesh2.rotation.y = Math.PI / 3.2;
-        padlockGroup.add(ringMesh2);
-
-        // 6. Glowing Particle Cloud
-        const particleCount = 36;
+        // 6. Subdued Cyber Dust
+        const particleCount = 28;
         const particlePositions = new Float32Array(particleCount * 3);
         for (let p = 0; p < particleCount * 3; p += 3) {
-            particlePositions[p] = (Math.random() - 0.5) * 3.0;
-            particlePositions[p + 1] = (Math.random() - 0.5) * 3.0;
-            particlePositions[p + 2] = (Math.random() - 0.5) * 2.2;
+            particlePositions[p] = (Math.random() - 0.5) * 2.8;
+            particlePositions[p + 1] = (Math.random() - 0.5) * 2.8;
+            particlePositions[p + 2] = (Math.random() - 0.5) * 2.0;
         }
         const particleGeom = new THREE.BufferGeometry();
         particleGeom.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
         const particleMat = new THREE.PointsMaterial({
-            size: 0.045,
-            color: 0x00D2D3,
+            size: 0.035,
+            color: 0x38BDF8,
             transparent: true,
-            opacity: 0.75,
+            opacity: 0.55,
             blending: THREE.AdditiveBlending
         });
         const particlePoints = new THREE.Points(particleGeom, particleMat);
         padlockGroup.add(particlePoints);
 
-        // --- Lighting ---
-        const ambientLight = new THREE.AmbientLight(0x6C5CE7, 1.25);
+        // --- Studio Lighting ---
+        const ambientLight = new THREE.AmbientLight(0x1E2230, 1.2);
         scene.add(ambientLight);
 
-        const keyLight = new THREE.DirectionalLight(0xFFFFFF, 2.2);
+        const keyLight = new THREE.DirectionalLight(0xFFFFFF, 2.4);
         keyLight.position.set(3, 4, 3);
         scene.add(keyLight);
 
-        const rimLight = new THREE.DirectionalLight(0x00D2D3, 2.6);
+        const rimLight = new THREE.DirectionalLight(0x38BDF8, 1.8);
         rimLight.position.set(-3, -2, -3);
         scene.add(rimLight);
 
-        const topSpecular = new THREE.PointLight(0x8F82FF, 1.6, 8);
+        const topSpecular = new THREE.PointLight(0xFFFFFF, 1.4, 8);
         topSpecular.position.set(0, 3, 2.5);
         scene.add(topSpecular);
 
-        // --- Interaction State ---
+        // --- Interaction ---
         let isDragging = false;
         let prevPointerX = 0;
         let prevPointerY = 0;
@@ -403,17 +374,15 @@
         let currParallaxX = 0;
         let currParallaxY = 0;
 
-        // Mouse Parallax across the Hero
         const heroSection = container.closest('section') || document.body;
         heroSection.addEventListener('mousemove', function (e) {
             const rect = heroSection.getBoundingClientRect();
             const relX = (e.clientX - rect.left) / rect.width - 0.5;
             const relY = (e.clientY - rect.top) / rect.height - 0.5;
-            targetParallaxX = relX * 0.45;
-            targetParallaxY = relY * 0.45;
+            targetParallaxX = relX * 0.35;
+            targetParallaxY = relY * 0.35;
         }, { passive: true });
 
-        // Click / Touch Drag Interaction on the 3D Container
         container.addEventListener('pointerdown', function (e) {
             isDragging = true;
             prevPointerX = e.clientX;
@@ -429,8 +398,8 @@
             if (!isDragging) return;
             const deltaX = e.clientX - prevPointerX;
             const deltaY = e.clientY - prevPointerY;
-            dragVelX = deltaX * 0.009;
-            dragVelY = deltaY * 0.009;
+            dragVelX = deltaX * 0.008;
+            dragVelY = deltaY * 0.008;
             userRotY += dragVelX;
             userRotX += dragVelY;
             prevPointerX = e.clientX;
@@ -448,7 +417,6 @@
         container.addEventListener('pointerup', endDrag);
         container.addEventListener('pointercancel', endDrag);
 
-        // Responsive Resize
         function handleResize() {
             const w = container.clientWidth || 280;
             const h = container.clientHeight || 210;
@@ -458,42 +426,33 @@
         }
         window.addEventListener('resize', handleResize, { passive: true });
 
-        // --- Padlock Animation Loop ---
         const clock = new THREE.Clock();
 
         function animatePadlock() {
             requestAnimationFrame(animatePadlock);
             const elapsed = clock.getElapsedTime();
 
-            // Idle floating motion
-            padlockGroup.position.y = Math.sin(elapsed * 1.6) * 0.09;
+            padlockGroup.position.y = Math.sin(elapsed * 1.5) * 0.08;
 
-            // Inner core rotation & glowing pulse
-            coreMesh.rotation.y += 0.025;
-            coreMesh.rotation.x += 0.015;
-            const corePulse = 3.2 + Math.sin(elapsed * 3.2) * 0.8;
+            coreMesh.rotation.y += 0.02;
+            coreMesh.rotation.x += 0.012;
+            const corePulse = 3.2 + Math.sin(elapsed * 3) * 0.7;
             innerLight.intensity = corePulse;
-            coreMaterial.emissiveIntensity = corePulse * 0.65;
+            coreMaterial.emissiveIntensity = corePulse * 0.6;
 
-            // Orbit rings animation
-            ringMesh1.rotation.z += 0.007;
-            ringMesh2.rotation.z -= 0.005;
-            particlePoints.rotation.y += 0.0025;
+            ringMesh1.rotation.z += 0.006;
+            particlePoints.rotation.y += 0.002;
 
-            // Inertia & drag momentum decay
             if (!isDragging) {
                 userRotY += dragVelX;
                 userRotX += dragVelY;
-                dragVelX *= 0.94; // friction
+                dragVelX *= 0.94;
                 dragVelY *= 0.94;
-                // Idle gentle auto-spin
-                userRotY += 0.0035;
+                userRotY += 0.003;
             }
 
-            // Clamp vertical rotation
-            userRotX = Math.max(-0.6, Math.min(0.6, userRotX));
+            userRotX = Math.max(-0.55, Math.min(0.55, userRotX));
 
-            // Smooth parallax interpolation
             currParallaxX = lerp(currParallaxX, targetParallaxX, 0.08);
             currParallaxY = lerp(currParallaxY, targetParallaxY, 0.08);
 
@@ -506,7 +465,6 @@
         animatePadlock();
     }
 
-    // Initialize when DOM and Three.js are ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initThreePadlock);
     } else {
