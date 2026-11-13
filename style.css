@@ -1,284 +1,245 @@
 /* ==========================================================================
-   MyPass Vault — Stealth Obsidian 2026 UI & Precision Physics Engine
-   High-Trust Swiss-Bank Matte Obsidian, Precision Hairline Borders & Restrained Elevation
+   MyPass Vault — Stealth Obsidian 2026 Design System
+   High-Trust Swiss-Bank Grade Architecture • Bento Grid • Zero-Lag Performance
    ========================================================================== */
 
-/* Root Palette */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap');
+
 :root {
-    --brand-primary: #4F46E5;
-    --brand-light: #818CF8;
-    --brand-dark: #0B0D13;
-    --brand-bg: #08090D;
-    --brand-card: #10131A;
-    --brand-surface: #161922;
-    --brand-accent: #38BDF8;
-    --brand-emerald: #10B981;
+    --bg-base: #08090D;
+    --bg-surface: #0E1118;
+    --bg-card: #12151F;
+    --bg-card-hover: #161A26;
+    --bg-elevated: #1A1F2E;
+    
+    --border-subtle: rgba(255, 255, 255, 0.07);
+    --border-hover: rgba(255, 255, 255, 0.16);
+    --border-accent: rgba(99, 102, 241, 0.35);
+    
+    --primary: #4F46E5;
+    --primary-light: #818CF8;
+    --accent-emerald: #10B981;
+    --accent-cyan: #0EA5E9;
+    --accent-amber: #F59E0B;
+    --accent-rose: #F43F5E;
+    
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 html, body {
-    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
     width: 100%;
     max-width: 100vw;
-    background-color: #08090D !important;
-    color: #F8FAFC;
+    overflow-x: hidden;
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* ==========================================================================
-   1. STEALTH OBSIDIAN MATTE SURFACE PANELS (Solid, Clean, Non-Gimmick)
-   ========================================================================== */
-
-/* High-Trust Matte Basalt Panels with Precision 1px Hairlines */
-.liquid-glass-card,
-.bg-brand-card,
-.bg-brand-surface {
-    background: #10131A !important;
-    border: 1px solid rgba(255, 255, 255, 0.07) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.75),
-                0 1px 1px 0 rgba(255, 255, 255, 0.04);
-    position: relative;
-    transform-style: preserve-3d;
-    will-change: transform;
-    transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-                background-color 0.25s ease;
+/* Crisp Monospace for Secrets & Keys */
+.font-mono {
+    font-family: 'JetBrains Mono', monospace;
 }
 
-/* Nested Inner Mockup Items */
-.bg-brand-card .bg-brand-card,
-.bg-brand-card .bg-slate-900,
-.bg-brand-card .bg-brand-dark {
-    background: #0B0D13 !important;
-    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+/* Subtle Architectural Grid Background */
+.bg-stealth-grid {
+    background-color: var(--bg-base);
+    background-image: 
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(79, 70, 229, 0.15), transparent),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 100% 100%, 36px 36px, 36px 36px;
 }
 
-/* Sticky Minimalist Header: Precision Apple/Linear Obsidian Navbar */
-header.sticky {
-    background: rgba(8, 9, 13, 0.88) !important;
-    backdrop-filter: blur(14px) saturate(140%) !important;
-    -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.65);
-}
-
-/* High-Precision Hover State: Subtle Metallic Catch */
-.bg-brand-card:hover {
-    border-top: 1px solid rgba(255, 255, 255, 0.24) !important;
-    border-color: rgba(255, 255, 255, 0.14) !important;
-    box-shadow: 0 20px 44px -10px rgba(0, 0, 0, 0.85),
-                0 0 24px -6px rgba(79, 70, 229, 0.12);
-}
-
-/* Subtle Specular Glare (Polished Obsidian Catching Light) */
-.card-specular-glare {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    border-radius: inherit;
-    opacity: 0;
-    mix-blend-mode: overlay;
-    z-index: 4;
-    will-change: background, opacity;
-    transition: opacity 0.25s ease-out;
-}
-
-/* ==========================================================================
-   2. REFINED ARCHITECTURAL AMBIENCE (Zero Distracting Gimmicks)
-   ========================================================================== */
-
-#liquid-glass-background-fx {
-    position: fixed;
+/* Navbar */
+header.sticky-nav {
+    position: sticky;
     top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 0;
+    z-index: 50;
+    background: rgba(8, 9, 13, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Bento Grid Cards */
+.bento-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 24px;
+    padding: 2rem;
+    position: relative;
     overflow: hidden;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
 }
 
-.ambient-blob {
+.bento-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.85);
+}
+
+/* Subtle Card Glow Header */
+.bento-card::before {
+    content: '';
     position: absolute;
-    border-radius: 50%;
-    filter: blur(130px);
-    opacity: 0.16; /* Muted, deep, elegant */
-    mix-blend-mode: screen;
-    will-change: transform;
-    pointer-events: none;
-}
-
-.blob-purple {
-    width: 680px;
-    height: 680px;
-    background: radial-gradient(circle, #4F46E5 0%, rgba(79, 70, 229, 0) 70%);
-    top: -220px;
-    left: 8%;
-    animation: morphBlob1 30s ease-in-out infinite alternate;
-}
-
-.blob-cyan {
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, #0284C7 0%, rgba(2, 132, 199, 0) 70%);
-    top: 42%;
-    right: 5%;
-    animation: morphBlob2 34s ease-in-out infinite alternate;
-}
-
-.blob-light-purple {
-    width: 560px;
-    height: 560px;
-    background: radial-gradient(circle, #6366F1 0%, rgba(99, 102, 241, 0) 70%);
-    bottom: -160px;
-    left: 24%;
-    animation: morphBlob3 28s ease-in-out infinite alternate;
-}
-
-@keyframes morphBlob1 {
-    0% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(60px, 90px) scale(1.1); }
-    100% { transform: translate(-50px, 60px) scale(0.96); }
-}
-
-@keyframes morphBlob2 {
-    0% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(-80px, -60px) scale(1.08); }
-    100% { transform: translate(50px, 70px) scale(0.94); }
-}
-
-@keyframes morphBlob3 {
-    0% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(70px, -60px) scale(1.1); }
-    100% { transform: translate(-40px, -40px) scale(0.97); }
-}
-
-/* Micro-Noise Texture */
-.svg-noise-overlay {
-    position: fixed;
     top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    opacity: 0.02;
-    z-index: 1;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    background-repeat: repeat;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
 }
 
-/* Subtle Cursor Spotlight */
-#cursor-spotlight-aura {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 440px;
-    height: 440px;
-    margin-top: -220px;
-    margin-left: -220px;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 2;
-    background: radial-gradient(circle, rgba(56, 189, 248, 0.07) 0%, rgba(79, 70, 229, 0.04) 40%, transparent 70%);
-    mix-blend-mode: screen;
-    filter: blur(35px);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    will-change: transform;
+/* Micro Badges */
+.badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
 }
 
-/* Magnetic Buttons */
-.magnetic-btn {
-    will-change: transform;
-    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease;
+.badge-pill.emerald {
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.25);
+    color: #34D399;
 }
 
-/* ==========================================================================
-   3. THREE.JS 3D OBSIDIAN & TITANIUM PADLOCK CONTAINER
-   ========================================================================== */
+.badge-pill.indigo {
+    background: rgba(79, 70, 229, 0.1);
+    border-color: rgba(79, 70, 229, 0.3);
+    color: var(--primary-light);
+}
 
-#hero-padlock-container {
-    position: relative;
-    width: 100%;
-    max-width: 320px;
-    height: 230px;
-    margin: 0 auto 1.25rem auto;
-    display: flex;
+/* Primary Button */
+.btn-primary {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    cursor: grab;
-    touch-action: none;
+    background: #4F46E5;
+    background: linear-gradient(180deg, #5B52F2 0%, #4338CA 100%);
+    color: #FFFFFF;
+    font-weight: 700;
+    border-radius: 14px;
+    padding: 0.875rem 1.75rem;
+    font-size: 0.95rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 20px rgba(79, 70, 229, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    text-decoration: none;
+    cursor: pointer;
 }
 
-#hero-padlock-container:active {
-    cursor: grabbing;
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    background: linear-gradient(180deg, #6860F5 0%, #4F46E5 100%);
 }
 
-#padlock-canvas {
-    width: 100% !important;
-    height: 100% !important;
-    display: block;
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    font-weight: 600;
+    border-radius: 14px;
+    padding: 0.875rem 1.75rem;
+    font-size: 0.95rem;
+    border: 1px solid var(--border-subtle);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    background: var(--bg-elevated);
+    border-color: var(--border-hover);
+    transform: translateY(-1px);
+}
+
+/* Interactive Slider */
+input[type="range"].stealth-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: #1A1F2E;
+    border-radius: 9999px;
     outline: none;
 }
 
-.padlock-hint-badge {
-    position: absolute;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #94A3B8;
-    background: rgba(11, 13, 19, 0.9);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 3px 12px;
-    border-radius: 9999px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    pointer-events: none;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-    z-index: 10;
-}
-
-.padlock-pulse-dot {
-    width: 6px;
-    height: 6px;
+input[type="range"].stealth-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
-    background: #10B981; /* Emerald Security Indicator */
-    box-shadow: 0 0 6px #10B981;
-    animation: padlockDotPulse 2s infinite;
+    background: var(--primary-light);
+    border: 2px solid #FFFFFF;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(79, 70, 229, 0.6);
+    transition: transform 0.15s ease;
 }
 
-@keyframes padlockDotPulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.8); }
+input[type="range"].stealth-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
 }
 
-/* ==========================================================================
-   4. RESPONSIVE OPTIMIZATIONS
-   ========================================================================== */
+/* Custom Checkbox */
+.stealth-checkbox {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+    background: #1A1F2E;
+    border: 1px solid var(--border-subtle);
+    display: inline-grid;
+    place-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
 
+.stealth-checkbox:checked {
+    background: var(--primary);
+    border-color: var(--primary-light);
+}
+
+.stealth-checkbox:checked::before {
+    content: "✓";
+    font-size: 11px;
+    font-weight: 900;
+    color: #FFFFFF;
+}
+
+/* 2FA Live Progress Ring */
+.totp-ring-circle {
+    transition: stroke-dashoffset 1s linear;
+}
+
+/* Responsive tweaks */
 @media (max-width: 768px) {
-    #hero-padlock-container {
-        height: 190px;
-        max-width: 270px;
-    }
-}
-
-@media (hover: none) and (pointer: coarse) {
-    .bg-brand-card,
-    .bg-brand-surface,
-    .magnetic-btn {
-        transform: none !important;
-    }
-
-    #cursor-spotlight-aura,
-    .card-specular-glare {
-        display: none !important;
+    .bento-card {
+        padding: 1.5rem;
+        border-radius: 20px;
     }
 }
