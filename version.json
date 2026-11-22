@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "version_code": 2,
+  "release_date": "2026-11-22",
+  "min_supported_version": "1.0.0",
+  "changelog": {
+    "en": "• 3D Liquid Glass & Obsidian Design\n• Integrated 2FA TOTP RFC 6238 Authenticator\n• Decoy PIN Duress Vault Protection\n• In-App One-Click Update Engine\n• Offline Air-Gapped Security Hardening",
+    "hi": "• 3D लिक्विड ग्लास और ऑब्सीडियन डिज़ाइन\n• 2FA TOTP RFC 6238 ऑथेंटिकेटर\n• फेक वॉल्ट (Decoy PIN) सुरक्षा\n• 1-क्लिक इन-ऐप अपडेट इंजन\n• पूर्णतः ऑफ़लाइन सुरक्षा सुधार"
+  },
+  "downloads": {
+    "windows_exe": "https://raw.githubusercontent.com/omendrapatel/MyPass-Vault/main/downloads/MyPass_Setup.exe",
+    "windows_msix": "https://raw.githubusercontent.com/omendrapatel/MyPass-Vault/main/downloads/mypass.msix",
+    "android_apk": "https://raw.githubusercontent.com/omendrapatel/MyPass-Vault/main/downloads/app-release.apk"
+  }
+}
