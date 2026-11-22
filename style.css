@@ -1066,8 +1066,30 @@ header.sticky-nav {
     .bento-card,
     .console-showcase,
     header.sticky-nav {
-        backdrop-filter: blur(12px) saturate(140%) !important;
-        -webkit-backdrop-filter: blur(12px) saturate(140%) !important;
+        backdrop-filter: blur(10px) saturate(130%) !important;
+        -webkit-backdrop-filter: blur(10px) saturate(130%) !important;
+    }
+
+    /* Disable redundant inner nested backdrop blur on mobile */
+    .bento-card div[class*="bg-\[\#0E1118\]"],
+    .bento-card div[class*="bg-\[\#12151F\]"],
+    .console-showcase div[class*="bg-\[\#0E1118\]"],
+    .console-showcase div[class*="bg-\[\#12151F\]"] {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+
+    /* Disable heavy continuous border-radius morphing & reduce blur on mobile */
+    .ambient-blob {
+        animation: none !important;
+        filter: blur(28px) !important;
+        will-change: auto !important;
+        opacity: 0.22 !important;
+    }
+
+    /* Disable full-screen SVG feTurbulence fractal noise overlay on mobile */
+    .svg-noise-overlay {
+        display: none !important;
     }
 
     #hero-padlock-container {
@@ -1081,6 +1103,7 @@ header.sticky-nav {
     .console-showcase,
     .magnetic-btn {
         transform: none !important;
+        will-change: auto !important;
     }
 
     #cursor-spotlight-aura {

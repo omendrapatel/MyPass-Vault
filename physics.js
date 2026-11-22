@@ -239,10 +239,10 @@
         const renderer = new THREE.WebGLRenderer({
             canvas: canvas,
             alpha: true,
-            antialias: true,
+            antialias: !isTouchDevice,
             powerPreference: 'high-performance'
         });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        renderer.setPixelRatio(isTouchDevice ? Math.min(window.devicePixelRatio || 1, 1.25) : Math.min(window.devicePixelRatio || 1, 2));
         renderer.setSize(initialWidth, initialHeight);
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
         renderer.toneMappingExposure = 1.25;
@@ -252,32 +252,48 @@
         scene.add(padlockGroup);
 
         // --- Materials ---
-        // Frosted Liquid Glass Body (MeshPhysicalMaterial with transmission and clearcoat)
-        const glassMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0x818CF8, // Primary light (#818CF8)
-            metalness: 0.05,
-            roughness: 0.16, // Frosted liquid glass
-            transmission: 0.92, // Glass refraction
-            thickness: 1.2,
-            ior: 1.52, // Standard glass index of refraction
-            reflectivity: 0.88,
-            clearcoat: 1.0,
-            clearcoatRoughness: 0.1,
-            transparent: true,
-            opacity: 0.94
-        });
+        // Frosted Liquid Glass Body (MeshPhysicalMaterial on desktop, optimized MeshStandardMaterial on mobile)
+        const glassMaterial = isTouchDevice
+            ? new THREE.MeshStandardMaterial({
+                color: 0x818CF8,
+                metalness: 0.1,
+                roughness: 0.25,
+                transparent: true,
+                opacity: 0.75
+            })
+            : new THREE.MeshPhysicalMaterial({
+                color: 0x818CF8, // Primary light (#818CF8)
+                metalness: 0.05,
+                roughness: 0.16, // Frosted liquid glass
+                transmission: 0.92, // Glass refraction
+                thickness: 1.2,
+                ior: 1.52, // Standard glass index of refraction
+                reflectivity: 0.88,
+                clearcoat: 1.0,
+                clearcoatRoughness: 0.1,
+                transparent: true,
+                opacity: 0.94
+            });
 
         // Semi-translucent Titanium Shackle
-        const shackleMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0xE0E7FF,
-            metalness: 0.85,
-            roughness: 0.15,
-            clearcoat: 1.0,
-            clearcoatRoughness: 0.08,
-            transmission: 0.3,
-            transparent: true,
-            opacity: 0.96
-        });
+        const shackleMaterial = isTouchDevice
+            ? new THREE.MeshStandardMaterial({
+                color: 0xE0E7FF,
+                metalness: 0.85,
+                roughness: 0.2,
+                transparent: true,
+                opacity: 0.92
+            })
+            : new THREE.MeshPhysicalMaterial({
+                color: 0xE0E7FF,
+                metalness: 0.85,
+                roughness: 0.15,
+                clearcoat: 1.0,
+                clearcoatRoughness: 0.08,
+                transmission: 0.3,
+                transparent: true,
+                opacity: 0.96
+            });
 
         // Glowing Inner Security Core (Matches website accent color #0EA5E9 / #10B981)
         const coreMaterial = new THREE.MeshStandardMaterial({
@@ -462,9 +478,29 @@
 
         // --- Padlock Animation Loop ---
         const clock = new THREE.Clock();
+        let isPadlockVisible = true;
+        let padlockAnimId = null;
+
+        if ('IntersectionObserver' in window) {
+            const padlockObserver = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    const wasVisible = isPadlockVisible;
+                    isPadlockVisible = entry.isIntersecting;
+                    if (isPadlockVisible && !wasVisible && !padlockAnimId) {
+                        clock.start();
+                        animatePadlock();
+                    }
+                });
+            }, { threshold: 0.05 });
+            padlockObserver.observe(container);
+        }
 
         function animatePadlock() {
-            requestAnimationFrame(animatePadlock);
+            if (!isPadlockVisible) {
+                padlockAnimId = null;
+                return;
+            }
+            padlockAnimId = requestAnimationFrame(animatePadlock);
             const elapsed = clock.getElapsedTime();
 
             // Idle floating motion
