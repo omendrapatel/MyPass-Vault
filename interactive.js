@@ -419,7 +419,7 @@
        ========================================================================== */
     function initHeroParallax() {
         // Disable on touch/mobile devices
-        const isTouch = window.matchMedia('(hover: none)').matches;
+        const isTouch = window.matchMedia('(hover: none)').matches || window.innerWidth <= 820;
         if (isTouch) return;
 
         const showcase = document.querySelector('.console-showcase');

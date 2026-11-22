@@ -1062,12 +1062,24 @@ header.sticky-nav {
 }
 
 /* Mobile & Touch 60fps Optimization */
-@media (max-width: 768px) {
+@media (max-width: 820px), (hover: none) and (pointer: coarse) {
+    /* 1. Eliminate heavy backdrop-filter & preserve-3d on scrolling cards for 100% native 60fps touch scrolling */
     .bento-card,
-    .console-showcase,
+    .console-showcase {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(18, 21, 31, 0.90) !important;
+        box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.6) !important;
+        transform: none !important;
+        transform-style: flat !important;
+        will-change: auto !important;
+    }
+
     header.sticky-nav {
-        backdrop-filter: blur(10px) saturate(130%) !important;
-        -webkit-backdrop-filter: blur(10px) saturate(130%) !important;
+        background: rgba(8, 9, 13, 0.94) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
     }
 
     /* Disable redundant inner nested backdrop blur on mobile */
@@ -1079,12 +1091,18 @@ header.sticky-nav {
         -webkit-backdrop-filter: none !important;
     }
 
-    /* Disable heavy continuous border-radius morphing & reduce blur on mobile */
-    .ambient-blob {
-        animation: none !important;
-        filter: blur(28px) !important;
-        will-change: auto !important;
-        opacity: 0.22 !important;
+    /* Disable fixed multi-element blobs with mix-blend-mode for instant zero-overhead hardware scroll */
+    #liquid-glass-background-fx {
+        display: none !important;
+    }
+
+    /* Beautiful ambient glow rendered statically on body (0ms CPU/GPU compositor overhead) */
+    body {
+        background-color: #08090D !important;
+        background-image: radial-gradient(circle at 15% 10%, rgba(79, 70, 229, 0.14) 0%, transparent 45%),
+                          radial-gradient(circle at 85% 35%, rgba(14, 165, 233, 0.12) 0%, transparent 45%),
+                          radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.08) 0%, transparent 45%) !important;
+        background-attachment: scroll !important;
     }
 
     /* Disable full-screen SVG feTurbulence fractal noise overlay on mobile */
@@ -1092,15 +1110,6 @@ header.sticky-nav {
         display: none !important;
     }
 
-    #hero-padlock-container {
-        height: 190px;
-        max-width: 270px;
-    }
-}
-
-@media (hover: none) and (pointer: coarse) {
-    .bento-card,
-    .console-showcase,
     .magnetic-btn {
         transform: none !important;
         will-change: auto !important;
@@ -1112,5 +1121,10 @@ header.sticky-nav {
 
     .card-specular-glare {
         display: none !important;
+    }
+
+    #hero-padlock-container {
+        height: 190px;
+        max-width: 270px;
     }
 }

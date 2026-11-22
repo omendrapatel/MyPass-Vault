@@ -15,8 +15,14 @@
         return start + (end - start) * factor;
     }
 
-    // Touch device detection
-    const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    // Touch / Mobile device detection (robust across all Android / iOS devices)
+    const isTouchDevice = (
+        window.matchMedia('(hover: none) and (pointer: coarse)').matches ||
+        window.matchMedia('(max-width: 820px)').matches ||
+        window.innerWidth <= 820 ||
+        ('ontouchstart' in window && !window.matchMedia('(pointer: fine)').matches) ||
+        (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0 && window.innerWidth <= 820)
+    );
 
     /* ==========================================================================
        1. GLOBAL CURSOR SPOTLIGHT AURA
@@ -242,7 +248,7 @@
             antialias: !isTouchDevice,
             powerPreference: 'high-performance'
         });
-        renderer.setPixelRatio(isTouchDevice ? Math.min(window.devicePixelRatio || 1, 1.25) : Math.min(window.devicePixelRatio || 1, 2));
+        renderer.setPixelRatio(isTouchDevice ? 1.0 : Math.min(window.devicePixelRatio || 1, 2));
         renderer.setSize(initialWidth, initialHeight);
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
         renderer.toneMappingExposure = 1.25;
@@ -399,13 +405,15 @@
         keyLight.position.set(3, 4, 3);
         scene.add(keyLight);
 
-        const rimLight = new THREE.DirectionalLight(0x0EA5E9, 2.6);
-        rimLight.position.set(-3, -2, -3);
-        scene.add(rimLight);
+        if (!isTouchDevice) {
+            const rimLight = new THREE.DirectionalLight(0x0EA5E9, 2.6);
+            rimLight.position.set(-3, -2, -3);
+            scene.add(rimLight);
 
-        const topSpecular = new THREE.PointLight(0x818CF8, 1.6, 8);
-        topSpecular.position.set(0, 3, 2.5);
-        scene.add(topSpecular);
+            const topSpecular = new THREE.PointLight(0x818CF8, 1.6, 8);
+            topSpecular.position.set(0, 3, 2.5);
+            scene.add(topSpecular);
+        }
 
         // --- Interaction State ---
         let isDragging = false;
@@ -495,12 +503,22 @@
             padlockObserver.observe(container);
         }
 
-        function animatePadlock() {
+        let lastPadlockTimestamp = 0;
+        function animatePadlock(timestamp) {
             if (!isPadlockVisible) {
                 padlockAnimId = null;
                 return;
             }
             padlockAnimId = requestAnimationFrame(animatePadlock);
+
+            // Throttle to 30fps on mobile to completely free up the main scrolling thread
+            if (isTouchDevice && timestamp) {
+                if (timestamp - lastPadlockTimestamp < 32) {
+                    return;
+                }
+                lastPadlockTimestamp = timestamp;
+            }
+
             const elapsed = clock.getElapsedTime();
 
             // Idle floating motion
