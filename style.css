@@ -1,35 +1,55 @@
 /* ==========================================================================
    MyPass Vault — Stealth Obsidian 2026 Design System
    High-Trust Swiss-Bank Grade Architecture • Bento Grid • Zero-Lag Performance
+   World-Class Craft Edition
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap');
 
+/* --------------------------------------------------------------------------
+   Design Tokens
+   -------------------------------------------------------------------------- */
 :root {
     --bg-base: #08090D;
     --bg-surface: #0E1118;
     --bg-card: #12151F;
     --bg-card-hover: #161A26;
     --bg-elevated: #1A1F2E;
-    
+
     --border-subtle: rgba(255, 255, 255, 0.07);
     --border-hover: rgba(255, 255, 255, 0.16);
     --border-accent: rgba(99, 102, 241, 0.35);
-    
+
     --primary: #4F46E5;
     --primary-light: #818CF8;
     --accent-emerald: #10B981;
     --accent-cyan: #0EA5E9;
     --accent-amber: #F59E0B;
     --accent-rose: #F43F5E;
-    
+
     --text-primary: #F8FAFC;
     --text-secondary: #94A3B8;
     --text-muted: #64748B;
+
+    /* Motion tokens */
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --duration-fast: 0.15s;
+    --duration-normal: 0.25s;
+    --duration-slow: 0.35s;
 }
 
+/* --------------------------------------------------------------------------
+   Global Reset & Base
+   -------------------------------------------------------------------------- */
 * {
     box-sizing: border-box;
+}
+
+/* #11 — Smooth scroll */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
 }
 
 html, body {
@@ -45,33 +65,290 @@ html, body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* #9 — Selection color */
+::selection {
+    background: rgba(79, 70, 229, 0.3);
+    color: white;
+}
+
+::-moz-selection {
+    background: rgba(79, 70, 229, 0.3);
+    color: white;
+}
+
+/* #8 — Custom thin scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-card);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-light);
+}
+
+/* Firefox scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--bg-card);
+}
+
+/* --------------------------------------------------------------------------
+   Typography Utilities
+   -------------------------------------------------------------------------- */
+
 /* Crisp Monospace for Secrets & Keys */
 .font-mono {
     font-family: 'JetBrains Mono', monospace;
 }
 
-/* Subtle Architectural Grid Background */
+/* --------------------------------------------------------------------------
+   Keyframe Animations
+   -------------------------------------------------------------------------- */
+
+/* #1 — Scroll-triggered entrance animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.92);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* #2 — Card hover shine sweep */
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%) rotate(0deg);
+    }
+    100% {
+        transform: translateX(100%) rotate(0deg);
+    }
+}
+
+/* #3 — Animated gradient text */
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* #13 — Console showcase pulse */
+@keyframes consolePulse {
+    0%, 100% {
+        box-shadow: 0 0 15px rgba(79, 70, 229, 0.15),
+                    0 0 30px rgba(79, 70, 229, 0.05);
+        border-color: rgba(79, 70, 229, 0.25);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(79, 70, 229, 0.3),
+                    0 0 50px rgba(79, 70, 229, 0.1);
+        border-color: rgba(79, 70, 229, 0.4);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   #1 — Scroll Reveal System
+   -------------------------------------------------------------------------- */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s var(--ease-out-expo),
+                transform 0.7s var(--ease-out-expo);
+    will-change: opacity, transform;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger children for sequential reveals */
+.reveal-stagger > .reveal:nth-child(1) { transition-delay: 0s; }
+.reveal-stagger > .reveal:nth-child(2) { transition-delay: 0.08s; }
+.reveal-stagger > .reveal:nth-child(3) { transition-delay: 0.16s; }
+.reveal-stagger > .reveal:nth-child(4) { transition-delay: 0.24s; }
+.reveal-stagger > .reveal:nth-child(5) { transition-delay: 0.32s; }
+.reveal-stagger > .reveal:nth-child(6) { transition-delay: 0.40s; }
+.reveal-stagger > .reveal:nth-child(7) { transition-delay: 0.48s; }
+.reveal-stagger > .reveal:nth-child(8) { transition-delay: 0.56s; }
+
+/* Directional variants */
+.reveal-left {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: opacity 0.7s var(--ease-out-expo),
+                transform 0.7s var(--ease-out-expo);
+    will-change: opacity, transform;
+}
+.reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.reveal-right {
+    opacity: 0;
+    transform: translateX(30px);
+    transition: opacity 0.7s var(--ease-out-expo),
+                transform 0.7s var(--ease-out-expo);
+    will-change: opacity, transform;
+}
+.reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.reveal-scale {
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.7s var(--ease-out-expo),
+                transform 0.7s var(--ease-out-expo);
+    will-change: opacity, transform;
+}
+.reveal-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* --------------------------------------------------------------------------
+   #3 — Animated Gradient Text
+   -------------------------------------------------------------------------- */
+.gradient-text-animated {
+    background: linear-gradient(
+        135deg,
+        var(--primary-light) 0%,
+        var(--primary) 25%,
+        var(--accent-cyan) 50%,
+        var(--primary-light) 75%,
+        var(--primary) 100%
+    );
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-shift 8s ease infinite;
+}
+
+/* --------------------------------------------------------------------------
+   Subtle Architectural Grid Background
+   -------------------------------------------------------------------------- */
 .bg-stealth-grid {
     background-color: var(--bg-base);
-    background-image: 
+    background-image:
         radial-gradient(ellipse 80% 50% at 50% -20%, rgba(79, 70, 229, 0.15), transparent),
         linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
     background-size: 100% 100%, 36px 36px, 36px 36px;
 }
 
-/* Navbar */
+/* --------------------------------------------------------------------------
+   Navbar
+   -------------------------------------------------------------------------- */
 header.sticky-nav {
     position: sticky;
     top: 0;
     z-index: 50;
     background: rgba(8, 9, 13, 0.88);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
     border-bottom: 1px solid var(--border-subtle);
+    transition: background var(--duration-normal) ease,
+                box-shadow var(--duration-normal) ease;
 }
 
-/* Bento Grid Cards */
+/* Scrolled state — slightly more opaque + shadow (toggled via JS if desired) */
+header.sticky-nav.scrolled {
+    background: rgba(8, 9, 13, 0.95);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   #4 — Section Dividers
+   -------------------------------------------------------------------------- */
+.section-divider {
+    width: 100%;
+    height: 1px;
+    border: none;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.1) 30%,
+        rgba(255, 255, 255, 0.1) 70%,
+        transparent 100%
+    );
+    position: relative;
+    margin: 0;
+}
+
+.section-divider::after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 20%;
+    right: 20%;
+    height: 7px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(79, 70, 229, 0.12),
+        transparent
+    );
+    filter: blur(4px);
+    border-radius: 50%;
+}
+
+/* --------------------------------------------------------------------------
+   Bento Grid Cards — Enhanced
+   -------------------------------------------------------------------------- */
 .bento-card {
     background: var(--bg-card);
     border: 1px solid var(--border-subtle);
@@ -79,9 +356,9 @@ header.sticky-nav {
     padding: 2rem;
     position: relative;
     overflow: hidden;
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-                border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform var(--duration-normal) var(--ease-out-expo),
+                border-color var(--duration-normal) var(--ease-out-expo),
+                box-shadow var(--duration-normal) var(--ease-out-expo);
     box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
 }
 
@@ -91,7 +368,7 @@ header.sticky-nav {
     box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.85);
 }
 
-/* Subtle Card Glow Header */
+/* #6 — Card inner glow on hover (::before) */
 .bento-card::before {
     content: '';
     position: absolute;
@@ -100,9 +377,52 @@ header.sticky-nav {
     right: 10%;
     height: 1px;
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+    transition: opacity var(--duration-normal) ease;
 }
 
-/* Micro Badges */
+.bento-card:hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: radial-gradient(
+        ellipse 60% 60% at 50% -10%,
+        rgba(79, 70, 229, 0.12),
+        transparent
+    );
+    opacity: 1;
+}
+
+/* #2 — Card hover shine sweep (::after) */
+.bento-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.05) 50%,
+        transparent 70%
+    );
+    transition: none;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+}
+
+.bento-card:hover::after {
+    opacity: 1;
+    animation: shimmer 0.75s ease forwards;
+}
+
+/* --------------------------------------------------------------------------
+   Micro Badges
+   -------------------------------------------------------------------------- */
 .badge-pill {
     display: inline-flex;
     align-items: center;
@@ -116,6 +436,8 @@ header.sticky-nav {
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border-subtle);
     color: var(--text-secondary);
+    transition: background var(--duration-fast) ease,
+                border-color var(--duration-fast) ease;
 }
 
 .badge-pill.emerald {
@@ -130,7 +452,9 @@ header.sticky-nav {
     color: var(--primary-light);
 }
 
-/* Primary Button */
+/* --------------------------------------------------------------------------
+   Primary Button — Enhanced with micro-interactions
+   -------------------------------------------------------------------------- */
 .btn-primary {
     display: inline-flex;
     align-items: center;
@@ -144,9 +468,11 @@ header.sticky-nav {
     font-size: 0.95rem;
     border: 1px solid rgba(255, 255, 255, 0.15);
     box-shadow: 0 4px 20px rgba(79, 70, 229, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.2s var(--ease-out-expo);
     text-decoration: none;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-primary:hover {
@@ -155,6 +481,17 @@ header.sticky-nav {
     background: linear-gradient(180deg, #6860F5 0%, #4F46E5 100%);
 }
 
+/* #7 — Button micro-interactions: press-down */
+.btn-primary:active {
+    transform: translateY(0);
+    scale: 0.98;
+    box-shadow: 0 2px 10px rgba(79, 70, 229, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transition-duration: 0.08s;
+}
+
+/* --------------------------------------------------------------------------
+   Secondary Button — Enhanced
+   -------------------------------------------------------------------------- */
 .btn-secondary {
     display: inline-flex;
     align-items: center;
@@ -166,9 +503,11 @@ header.sticky-nav {
     padding: 0.875rem 1.75rem;
     font-size: 0.95rem;
     border: 1px solid var(--border-subtle);
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.2s var(--ease-out-expo);
     text-decoration: none;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-secondary:hover {
@@ -177,7 +516,16 @@ header.sticky-nav {
     transform: translateY(-1px);
 }
 
-/* Interactive Slider */
+/* #7 — Secondary button micro-interactions */
+.btn-secondary:active {
+    transform: translateY(0);
+    scale: 0.98;
+    transition-duration: 0.08s;
+}
+
+/* --------------------------------------------------------------------------
+   Interactive Slider
+   -------------------------------------------------------------------------- */
 input[type="range"].stealth-slider {
     -webkit-appearance: none;
     appearance: none;
@@ -198,14 +546,28 @@ input[type="range"].stealth-slider::-webkit-slider-thumb {
     border: 2px solid #FFFFFF;
     cursor: pointer;
     box-shadow: 0 0 10px rgba(79, 70, 229, 0.6);
-    transition: transform 0.15s ease;
+    transition: transform var(--duration-fast) ease,
+                box-shadow var(--duration-fast) ease;
 }
 
 input[type="range"].stealth-slider::-webkit-slider-thumb:hover {
     transform: scale(1.2);
+    box-shadow: 0 0 16px rgba(79, 70, 229, 0.8);
 }
 
-/* Custom Checkbox */
+input[type="range"].stealth-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    border: 2px solid #FFFFFF;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(79, 70, 229, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   Custom Checkbox
+   -------------------------------------------------------------------------- */
 .stealth-checkbox {
     appearance: none;
     width: 18px;
@@ -216,7 +578,7 @@ input[type="range"].stealth-slider::-webkit-slider-thumb:hover {
     display: inline-grid;
     place-content: center;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all var(--duration-fast) ease;
 }
 
 .stealth-checkbox:checked {
@@ -231,15 +593,501 @@ input[type="range"].stealth-slider::-webkit-slider-thumb:hover {
     color: #FFFFFF;
 }
 
-/* 2FA Live Progress Ring */
+.stealth-checkbox:hover {
+    border-color: var(--border-hover);
+}
+
+/* --------------------------------------------------------------------------
+   2FA Live Progress Ring
+   -------------------------------------------------------------------------- */
 .totp-ring-circle {
     transition: stroke-dashoffset 1s linear;
 }
 
-/* Responsive tweaks */
+/* --------------------------------------------------------------------------
+   #5 — FAQ Accordion — Smooth CSS transitions
+   -------------------------------------------------------------------------- */
+.faq-item {
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    background: var(--bg-card);
+    overflow: hidden;
+    transition: border-color var(--duration-normal) ease,
+                box-shadow var(--duration-normal) ease;
+}
+
+.faq-item:hover {
+    border-color: var(--border-hover);
+}
+
+.faq-item.open,
+.faq-item.active {
+    border-color: rgba(79, 70, 229, 0.35);
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
+}
+
+.faq-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    padding-top: 0;
+    transition: max-height var(--duration-slow) ease,
+                padding var(--duration-slow) ease,
+                opacity var(--duration-slow) ease;
+}
+
+.faq-content.open,
+.faq-item.open .faq-content,
+.faq-item.active .faq-content {
+    max-height: 500px;
+    opacity: 1;
+    padding-top: 1rem;
+}
+
+.faq-icon {
+    transition: transform var(--duration-normal) var(--ease-out-expo);
+    flex-shrink: 0;
+}
+
+.faq-item.open .faq-icon,
+.faq-item.active .faq-icon {
+    transform: rotate(180deg);
+}
+
+/* --------------------------------------------------------------------------
+   #12 — Download Card Platform Hover Glow
+   -------------------------------------------------------------------------- */
+.download-windows,
+.download-android {
+    transition: border-color var(--duration-normal) ease,
+                box-shadow var(--duration-normal) ease,
+                transform var(--duration-normal) var(--ease-out-expo);
+}
+
+.download-windows:hover {
+    border-color: rgba(14, 165, 233, 0.4);
+    box-shadow: 0 8px 30px rgba(14, 165, 233, 0.15),
+                0 0 0 1px rgba(14, 165, 233, 0.1),
+                inset 0 1px 0 rgba(14, 165, 233, 0.1);
+}
+
+.download-android:hover {
+    border-color: rgba(16, 185, 129, 0.4);
+    box-shadow: 0 8px 30px rgba(16, 185, 129, 0.15),
+                0 0 0 1px rgba(16, 185, 129, 0.1),
+                inset 0 1px 0 rgba(16, 185, 129, 0.1);
+}
+
+/* --------------------------------------------------------------------------
+   #13 — Console Showcase Pulse
+   -------------------------------------------------------------------------- */
+.console-showcase {
+    animation: consolePulse 4s ease-in-out infinite;
+    border: 1px solid rgba(79, 70, 229, 0.25);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   #14 — Comparison Table Row Hover
+   -------------------------------------------------------------------------- */
+.comparison-table tr {
+    transition: background var(--duration-fast) ease;
+}
+
+.comparison-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.comparison-table th,
+.comparison-table td {
+    transition: color var(--duration-fast) ease;
+}
+
+.comparison-table tbody tr:hover td {
+    color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   Focus Visible — Accessibility
+   -------------------------------------------------------------------------- */
+:focus-visible {
+    outline: 2px solid var(--primary-light);
+    outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--primary-light);
+    outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Link defaults
+   -------------------------------------------------------------------------- */
+a {
+    color: var(--primary-light);
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
+}
+
+a:hover {
+    color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   #10 — Responsive
+   -------------------------------------------------------------------------- */
+
+/* Tablet and below */
 @media (max-width: 768px) {
     .bento-card {
         padding: 1.5rem;
         border-radius: 20px;
+        box-shadow: 0 6px 20px -8px rgba(0, 0, 0, 0.6);
+    }
+
+    .bento-card:hover {
+        box-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.7);
+        transform: translateY(-1px);
+    }
+
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.15rem; }
+
+    .btn-primary,
+    .btn-secondary {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+        border-radius: 12px;
+    }
+
+    .reveal {
+        transform: translateY(20px);
+    }
+}
+
+/* Small phone */
+@media (max-width: 480px) {
+    .bento-card {
+        padding: 1.25rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .bento-card:hover {
+        transform: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    /* No shimmer on small screens — perf */
+    .bento-card:hover::after {
+        animation: none;
+        opacity: 0;
+    }
+
+    h1 { font-size: 1.65rem; }
+    h2 { font-size: 1.3rem; }
+    h3 { font-size: 1.05rem; }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        justify-content: center;
+        padding: 0.75rem 1.25rem;
+        font-size: 0.875rem;
+    }
+
+    /* Force single column */
+    .grid,
+    [class*="grid-cols"] {
+        grid-template-columns: 1fr !important;
+    }
+
+    .reveal {
+        transform: translateY(15px);
+    }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    .reveal,
+    .reveal-left,
+    .reveal-right,
+    .reveal-scale {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+
+/* ==========================================================================
+   3D & LIQUID GLASS UI + CURSOR-TRAILING 3D TILT PHYSICS
+   ========================================================================== */
+
+/* 1. Color-Matched Liquid Glass Surface Styling */
+.bento-card,
+.console-showcase {
+    background: rgba(18, 21, 31, 0.62) !important;
+    backdrop-filter: blur(22px) saturate(160%);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+    border-top: 1px solid rgba(255, 255, 255, 0.28) !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.22) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.65),
+                0 0 25px -5px rgba(79, 70, 229, 0.15),
+                inset 0 1px 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+/* Specific styling for nested inner containers */
+.bento-card div[class*="bg-\[\#0E1118\]"],
+.bento-card div[class*="bg-\[\#12151F\]"],
+.console-showcase div[class*="bg-\[\#0E1118\]"],
+.console-showcase div[class*="bg-\[\#12151F\]"] {
+    background: rgba(14, 17, 24, 0.72) !important;
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Sticky Navbar Liquid Glass */
+header.sticky-nav {
+    background: rgba(8, 9, 13, 0.78) !important;
+    backdrop-filter: blur(22px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(160%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.55),
+                inset 0 -1px 0 0 rgba(79, 70, 229, 0.15);
+}
+
+/* Specular Glare Layer Injected Inside Cards */
+.card-specular-glare {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    opacity: 0;
+    mix-blend-mode: overlay;
+    z-index: 4;
+    will-change: background, opacity;
+    transition: opacity 0.25s ease-out;
+}
+
+/* Ambient Background Blobs & SVG Noise Texture */
+#liquid-glass-background-fx {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.ambient-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(95px);
+    opacity: 0.28;
+    mix-blend-mode: screen;
+    will-change: transform, border-radius;
+    pointer-events: none;
+}
+
+.blob-indigo {
+    width: 620px;
+    height: 620px;
+    background: radial-gradient(circle, #4F46E5 0%, rgba(79, 70, 229, 0) 70%);
+    top: -150px;
+    left: 5%;
+    animation: morphBlob1 24s ease-in-out infinite alternate;
+}
+
+.blob-cyan {
+    width: 580px;
+    height: 580px;
+    background: radial-gradient(circle, #0EA5E9 0%, rgba(14, 165, 233, 0) 70%);
+    top: 35%;
+    right: 5%;
+    animation: morphBlob2 28s ease-in-out infinite alternate;
+}
+
+.blob-emerald {
+    width: 520px;
+    height: 520px;
+    background: radial-gradient(circle, #10B981 0%, rgba(16, 185, 129, 0) 70%);
+    bottom: -120px;
+    left: 28%;
+    animation: morphBlob3 22s ease-in-out infinite alternate;
+}
+
+@keyframes morphBlob1 {
+    0% { transform: translate(0, 0) scale(1); border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+    50% { transform: translate(90px, 120px) scale(1.15); border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+    100% { transform: translate(-70px, 80px) scale(0.95); border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+}
+
+@keyframes morphBlob2 {
+    0% { transform: translate(0, 0) scale(1); border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%; }
+    50% { transform: translate(-110px, -90px) scale(1.12); border-radius: 70% 30% 50% 50% / 30% 60% 40% 70%; }
+    100% { transform: translate(70px, 90px) scale(0.92); border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%; }
+}
+
+@keyframes morphBlob3 {
+    0% { transform: translate(0, 0) scale(1); border-radius: 50% 50% 30% 70% / 50% 30% 70% 50%; }
+    50% { transform: translate(90px, -80px) scale(1.14); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+    100% { transform: translate(-60px, -50px) scale(0.96); border-radius: 50% 50% 30% 70% / 50% 30% 70% 50%; }
+}
+
+/* Faint Fixed SVG Noise Texture Overlay */
+.svg-noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    opacity: 0.03;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+}
+
+/* Global Cursor Spotlight Aura */
+#cursor-spotlight-aura {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 480px;
+    height: 480px;
+    margin-top: -240px;
+    margin-left: -240px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.12) 0%, rgba(79, 70, 229, 0.08) 42%, transparent 70%);
+    mix-blend-mode: screen;
+    filter: blur(35px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    will-change: transform;
+}
+
+/* Magnetic Button 3D Pull */
+.magnetic-btn {
+    will-change: transform;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+}
+
+/* Three.js 3D Frosted Glass Padlock Visual */
+#hero-padlock-container {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    height: 230px;
+    margin: 0 auto 1.5rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    touch-action: none;
+    z-index: 10;
+}
+
+#hero-padlock-container:active {
+    cursor: grabbing;
+}
+
+#padlock-canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    outline: none;
+}
+
+.padlock-hint-badge {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #38BDF8;
+    background: rgba(14, 17, 24, 0.85);
+    border: 1px solid rgba(14, 165, 233, 0.35);
+    padding: 3px 12px;
+    border-radius: 9999px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+.padlock-pulse-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #0EA5E9;
+    box-shadow: 0 0 8px #0EA5E9;
+    animation: padlockDotPulse 2s infinite;
+}
+
+@keyframes padlockDotPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+/* Mobile & Touch 60fps Optimization */
+@media (max-width: 768px) {
+    .bento-card,
+    .console-showcase,
+    header.sticky-nav {
+        backdrop-filter: blur(12px) saturate(140%) !important;
+        -webkit-backdrop-filter: blur(12px) saturate(140%) !important;
+    }
+
+    #hero-padlock-container {
+        height: 190px;
+        max-width: 270px;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .bento-card,
+    .console-showcase,
+    .magnetic-btn {
+        transform: none !important;
+    }
+
+    #cursor-spotlight-aura {
+        display: none !important;
+    }
+
+    .card-specular-glare {
+        display: none !important;
     }
 }

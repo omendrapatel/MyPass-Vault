@@ -3,7 +3,13 @@
  * 1. Live 2FA TOTP Ticking Engine with SVG Circular Gauge & 1-Click Copy
  * 2. Interactive Decoy Duress Vault Morphing Switch
  * 3. Live Cryptographic Password Generator Tool
- * 4. FAQ Smooth Accordion
+ * 4. FAQ Smooth Accordion (CSS transition-driven)
+ * 5. Scroll-triggered entrance animations (Intersection Observer)
+ * 6. Smooth number counter animation for hero stats
+ * 7. Active nav highlighting on scroll
+ * 8. Navbar background change on scroll
+ * 9. Subtle parallax on hero section
+ * 10. Copy button haptic feedback
  */
 
 (function () {
@@ -97,6 +103,7 @@
         if (!totpDisplay) return;
         const code = totpDisplay.textContent.replace(/\s+/g, '');
         navigator.clipboard.writeText(code).then(() => {
+            applyHapticFeedback(btnEl);
             const originalHTML = btnEl.innerHTML;
             btnEl.innerHTML = '<i class="fas fa-check text-emerald-400"></i> Copied!';
             btnEl.classList.add('border-emerald-500/40', 'text-emerald-400');
@@ -213,6 +220,7 @@
     window.copyGeneratedPassword = function (btnEl) {
         if (!pwdOutput) return;
         navigator.clipboard.writeText(pwdOutput.value).then(() => {
+            applyHapticFeedback(btnEl);
             const originalHTML = btnEl.innerHTML;
             btnEl.innerHTML = '<i class="fas fa-check text-emerald-400"></i> Copied!';
             setTimeout(() => {
@@ -225,7 +233,7 @@
     setTimeout(window.generatePassword, 100);
 
     /* ==========================================================================
-       4. FAQ ACCORDION ENGINE
+       4. FAQ ACCORDION ENGINE (CSS transition-driven with .open class)
        ========================================================================== */
     window.toggleFaq = function (btnEl) {
         const item = btnEl.closest('.faq-item');
@@ -234,14 +242,218 @@
         const icon = item.querySelector('.faq-icon');
         if (!content) return;
 
-        const isExpanded = !content.classList.contains('hidden');
+        const isExpanded = item.classList.contains('open');
+
         if (isExpanded) {
-            content.classList.add('hidden');
+            // Collapse this item
+            item.classList.remove('open');
             if (icon) icon.style.transform = 'rotate(0deg)';
         } else {
-            content.classList.remove('hidden');
+            // Single-accordion: close all others first
+            document.querySelectorAll('.faq-item.open').forEach(openItem => {
+                openItem.classList.remove('open');
+                const openIcon = openItem.querySelector('.faq-icon');
+                if (openIcon) openIcon.style.transform = 'rotate(0deg)';
+            });
+
+            // Expand this item
+            item.classList.add('open');
             if (icon) icon.style.transform = 'rotate(180deg)';
         }
     };
+
+    /* ==========================================================================
+       5. SCROLL-TRIGGERED ENTRANCE ANIMATIONS (Intersection Observer)
+       ========================================================================== */
+    function initRevealAnimations() {
+        const revealElements = document.querySelectorAll('.reveal');
+        if (!revealElements.length) return;
+
+        const revealObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+
+                    // Stagger siblings: find index among .reveal siblings
+                    const parent = el.parentElement;
+                    if (parent) {
+                        const revealSiblings = Array.from(parent.children).filter(
+                            child => child.classList.contains('reveal')
+                        );
+                        const idx = revealSiblings.indexOf(el);
+                        if (idx > 0) {
+                            el.style.transitionDelay = (idx * 0.08) + 's';
+                        }
+                    }
+
+                    el.classList.add('visible');
+                    revealObserver.unobserve(el); // Only trigger once
+                }
+            });
+        }, { threshold: 0.15 });
+
+        revealElements.forEach(function (el) {
+            revealObserver.observe(el);
+        });
+    }
+
+    initRevealAnimations();
+
+    /* ==========================================================================
+       6. SMOOTH NUMBER COUNTER ANIMATION FOR HERO STATS
+       ========================================================================== */
+    function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+    }
+
+    function animateCounter(el, target, duration) {
+        const startTime = performance.now();
+        const suffix = el.dataset.suffix || '';
+        const prefix = el.dataset.prefix || '';
+
+        function tick(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = easeOutCubic(progress);
+            const current = Math.round(eased * target);
+
+            el.textContent = prefix + current.toLocaleString() + suffix;
+
+            if (progress < 1) {
+                requestAnimationFrame(tick);
+            }
+        }
+
+        requestAnimationFrame(tick);
+    }
+
+    function initStatCounters() {
+        const statNumbers = document.querySelectorAll('.stat-number');
+        if (!statNumbers.length) return;
+
+        const counterObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseInt(el.dataset.target || el.textContent.replace(/[^0-9]/g, ''), 10);
+                    if (!isNaN(target) && target > 0) {
+                        animateCounter(el, target, 1500);
+                    }
+                    counterObserver.unobserve(el);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        statNumbers.forEach(function (el) {
+            counterObserver.observe(el);
+        });
+    }
+
+    initStatCounters();
+
+    /* ==========================================================================
+       7. ACTIVE NAV LINK HIGHLIGHTING ON SCROLL
+       ========================================================================== */
+    function initActiveNavHighlighting() {
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('nav a[href^="#"]');
+        if (!sections.length || !navLinks.length) return;
+
+        const sectionObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(function (link) {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + id) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, {
+            rootMargin: '-20% 0px -60% 0px',
+            threshold: 0
+        });
+
+        sections.forEach(function (section) {
+            sectionObserver.observe(section);
+        });
+    }
+
+    initActiveNavHighlighting();
+
+    /* ==========================================================================
+       8. NAVBAR BACKGROUND CHANGE ON SCROLL
+       ========================================================================== */
+    function initNavbarScrollEffect() {
+        const header = document.querySelector('header');
+        if (!header) return;
+
+        let ticking = false;
+
+        function updateNavbar() {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', function () {
+            if (!ticking) {
+                requestAnimationFrame(updateNavbar);
+                ticking = true;
+            }
+        }, { passive: true });
+
+        // Set initial state
+        updateNavbar();
+    }
+
+    initNavbarScrollEffect();
+
+    /* ==========================================================================
+       9. SUBTLE PARALLAX ON HERO SECTION
+       ========================================================================== */
+    function initHeroParallax() {
+        // Disable on touch/mobile devices
+        const isTouch = window.matchMedia('(hover: none)').matches;
+        if (isTouch) return;
+
+        const showcase = document.querySelector('.console-showcase');
+        if (!showcase) return;
+
+        let ticking = false;
+
+        function updateParallax() {
+            const scrollY = window.scrollY;
+            const translateY = scrollY * 0.1;
+            showcase.style.transform = 'translateY(' + translateY + 'px)';
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', function () {
+            if (!ticking) {
+                requestAnimationFrame(updateParallax);
+                ticking = true;
+            }
+        }, { passive: true });
+    }
+
+    initHeroParallax();
+
+    /* ==========================================================================
+       10. COPY BUTTON HAPTIC FEEDBACK (scale pulse on click)
+       ========================================================================== */
+    function applyHapticFeedback(btnEl) {
+        if (!btnEl) return;
+        btnEl.style.transition = 'transform 0.15s ease';
+        btnEl.style.transform = 'scale(0.95)';
+        setTimeout(function () {
+            btnEl.style.transform = 'scale(1)';
+        }, 150);
+    }
 
 })();

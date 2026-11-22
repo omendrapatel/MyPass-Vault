@@ -45,8 +45,21 @@
             }
         }
     </script>
+    <!-- Three.js 3D Engine -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
-<body class="bg-stealth-grid text-slate-100 min-h-screen">
+<body class="bg-stealth-grid text-slate-100 min-h-screen relative">
+
+    <!-- Ambient Morphing Background Blobs & SVG Noise Texture -->
+    <div id="liquid-glass-background-fx" aria-hidden="true">
+        <div class="ambient-blob blob-indigo"></div>
+        <div class="ambient-blob blob-cyan"></div>
+        <div class="ambient-blob blob-emerald"></div>
+        <div class="svg-noise-overlay"></div>
+    </div>
+
+    <!-- Cursor Spotlight Aura -->
+    <div id="cursor-spotlight-aura" aria-hidden="true"></div>
 
     <!-- Sticky Minimalist Navigation Bar -->
     <header class="sticky-nav">
@@ -70,10 +83,27 @@
             </nav>
 
             <div class="flex items-center space-x-4">
+                <!-- Mobile Hamburger Menu Button -->
+                <button id="mobile-menu-btn" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="md:hidden p-2 text-slate-300 hover:text-white transition" aria-label="Toggle navigation menu">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
                 <a href="#download" class="btn-primary text-xs py-2.5 px-5">
                     <i class="fas fa-arrow-down mr-2 text-[10px]"></i> Download Free
                 </a>
             </div>
+        </div>
+
+        <!-- Mobile Navigation Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#0E1118]/95 backdrop-blur-xl border-t border-white/5">
+            <nav class="max-w-7xl mx-auto px-4 py-4 flex flex-col space-y-3 text-sm font-semibold text-slate-300">
+                <a href="#features" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="hover:text-white transition py-2 border-b border-white/5">Features</a>
+                <a href="#authenticator" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="hover:text-white transition py-2 border-b border-white/5">2FA Authenticator</a>
+                <a href="#decoy" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="hover:text-white transition py-2 border-b border-white/5">Decoy PIN</a>
+                <a href="#generator" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="hover:text-white transition py-2 border-b border-white/5">Password Gen</a>
+                <a href="#comparison" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="hover:text-white transition py-2 border-b border-white/5">Why Offline?</a>
+                <a href="#faq" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="hover:text-white transition py-2 border-b border-white/5">FAQ</a>
+                <a href="privacy.html" class="hover:text-white transition py-2">Privacy</a>
+            </nav>
         </div>
     </header>
 
@@ -90,7 +120,7 @@
             <!-- Main Punchline -->
             <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-5xl mx-auto leading-[1.1] mb-6">
                 Your Passwords & 2FA.<br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-sky-300 to-emerald-400">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-sky-300 to-emerald-400 gradient-text-animated">
                     Zero Cloud. 100% Offline.
                 </span>
             </h1>
@@ -100,7 +130,7 @@
             </p>
 
             <!-- Primary CTAs -->
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
                 <a href="downloads/MyPass_Setup.exe" download class="btn-primary py-4 px-8 w-full sm:w-auto text-base">
                     <i class="fab fa-windows mr-3 text-lg"></i> Download for Windows (.exe)
                 </a>
@@ -109,8 +139,24 @@
                 </a>
             </div>
 
+            <!-- Trust Indicators -->
+            <div class="flex items-center justify-center gap-6 text-xs text-slate-500 mt-6 mb-8">
+                <span class="flex items-center gap-1.5"><i class="fas fa-shield-halved text-emerald-500"></i> AES-256 Encrypted</span>
+                <span class="flex items-center gap-1.5"><i class="fas fa-wifi-slash text-indigo-400"></i> Zero Internet Required</span>
+                <span class="flex items-center gap-1.5"><i class="fas fa-code-branch text-sky-400"></i> Open Architecture</span>
+            </div>
+
+            <!-- Interactive 3D Frosted Glass Padlock Visual (Three.js) -->
+            <div id="hero-padlock-container">
+                <canvas id="padlock-canvas"></canvas>
+                <div class="padlock-hint-badge">
+                    <span class="padlock-pulse-dot"></span>
+                    <span>Interactive 3D Glass Padlock • Drag to Rotate</span>
+                </div>
+            </div>
+
             <!-- Grand Console Showcase (Full-Width Hardware Dashboard) -->
-            <div class="max-w-5xl mx-auto rounded-3xl border border-white/10 bg-[#0E1118] p-3 sm:p-5 shadow-2xl relative">
+            <div class="console-showcase max-w-5xl mx-auto rounded-3xl border border-white/10 bg-[#0E1118] p-3 sm:p-5 shadow-2xl relative">
                 <!-- Mac-style top bar -->
                 <div class="flex items-center justify-between pb-4 border-b border-white/5 px-3">
                     <div class="flex items-center space-x-2">
@@ -191,11 +237,13 @@
         </div>
     </section>
 
+    <div class="section-divider"></div>
+
     <!-- Bento Grid Architecture: Modern 2026 Feature Showcase -->
-    <section id="features" class="py-24 border-t border-white/5">
+    <section id="features" class="py-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <div class="text-center max-w-3xl mx-auto mb-16">
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal">
                 <span class="badge-pill indigo mb-3">Architectural Precision</span>
                 <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
                     Engineered for Digital Sovereignty
@@ -209,7 +257,7 @@
             <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
 
                 <!-- 1. LIVE INTERACTIVE 2FA AUTHENTICATOR WIDGET (Span 7 cols) -->
-                <div class="bento-card md:col-span-7 flex flex-col justify-between" id="authenticator">
+                <div class="bento-card reveal md:col-span-7 flex flex-col justify-between" id="authenticator">
                     <div>
                         <div class="flex items-center justify-between mb-4">
                             <span class="badge-pill emerald">
@@ -265,7 +313,7 @@
                 </div>
 
                 <!-- 2. INTERACTIVE DECOY PIN DURESS VAULT (Span 5 cols) -->
-                <div class="bento-card md:col-span-5 flex flex-col justify-between" id="decoy">
+                <div class="bento-card reveal md:col-span-5 flex flex-col justify-between" id="decoy">
                     <div>
                         <div class="flex items-center justify-between mb-4">
                             <span id="vault-status-indicator" class="badge-pill emerald text-[10px]">
@@ -320,7 +368,7 @@
                 </div>
 
                 <!-- 3. LIVE CRYPTOGRAPHIC PASSWORD GENERATOR (Span 5 cols) -->
-                <div class="bento-card md:col-span-5 flex flex-col justify-between" id="generator">
+                <div class="bento-card reveal md:col-span-5 flex flex-col justify-between" id="generator">
                     <div>
                         <div class="flex items-center justify-between mb-4">
                             <span class="badge-pill indigo">
@@ -379,7 +427,7 @@
                 </div>
 
                 <!-- 4. ZERO CLOUD CRYPTOGRAPHIC STORAGE (Span 7 cols) -->
-                <div class="bento-card md:col-span-7 flex flex-col justify-between">
+                <div class="bento-card reveal md:col-span-7 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-4">
                             <span class="badge-pill emerald">Air-Gapped Privacy</span>
@@ -411,7 +459,7 @@
                 </div>
 
                 <!-- 5. ENCRYPTED MARKDOWN DIARY (Span 6 cols) -->
-                <div class="bento-card md:col-span-6 flex flex-col justify-between">
+                <div class="bento-card reveal md:col-span-6 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center space-x-2 text-indigo-400 text-xs font-bold uppercase tracking-wider mb-3">
                             <i class="fas fa-book-bookmark"></i>
@@ -433,7 +481,7 @@
                 </div>
 
                 <!-- 6. 30-DAY TRASH & .MYPASS BACKUPS (Span 6 cols) -->
-                <div class="bento-card md:col-span-6 flex flex-col justify-between">
+                <div class="bento-card reveal md:col-span-6 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center space-x-2 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-3">
                             <i class="fas fa-shield-virus"></i>
@@ -461,10 +509,12 @@
         </div>
     </section>
 
+    <div class="section-divider"></div>
+
     <!-- Architectural Comparison: Cloud vs MyPass Vault -->
-    <section id="comparison" class="py-24 border-t border-white/5 bg-[#0A0C12]">
+    <section id="comparison" class="py-24 bg-[#0A0C12]">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal">
                 <span class="badge-pill emerald mb-3">Zero Vulnerability</span>
                 <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
                     Why Cloud Password Managers Fail You
@@ -474,7 +524,7 @@
                 </p>
             </div>
 
-            <div class="overflow-x-auto bg-[#12151F] border border-white/10 rounded-2xl shadow-xl p-2 sm:p-6">
+            <div class="reveal overflow-x-auto bg-[#12151F] border border-white/10 rounded-2xl shadow-xl p-2 sm:p-6">
                 <table class="w-full text-left text-xs sm:text-sm">
                     <thead>
                         <tr class="border-b border-white/10 text-slate-400">
@@ -515,10 +565,12 @@
         </div>
     </section>
 
+    <div class="section-divider"></div>
+
     <!-- FAQ Section -->
-    <section id="faq" class="py-24 border-t border-white/5">
+    <section id="faq" class="py-24">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
+            <div class="text-center mb-16 reveal">
                 <span class="badge-pill indigo mb-3">Clear Answers</span>
                 <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
                     Frequently Asked Questions
@@ -526,42 +578,42 @@
             </div>
 
             <div class="space-y-4">
-                <div class="faq-item bento-card p-6">
+                <div class="faq-item reveal bento-card p-6">
                     <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left font-bold text-white text-base">
                         <span>How can I transfer my passwords between Windows and Android without cloud sync?</span>
                         <i class="fas fa-chevron-down faq-icon text-slate-400 text-xs transition-transform duration-200"></i>
                     </button>
-                    <div class="faq-content hidden pt-4 text-slate-400 text-sm leading-relaxed border-t border-white/5 mt-4">
+                    <div class="faq-content pt-4 text-slate-400 text-sm leading-relaxed border-t border-white/5 mt-4">
                         You can export your database as an encrypted <code class="text-indigo-400 font-mono">.mypass</code> file from Settings. This backup is secured with your custom password using AES-256. Simply transfer it via USB cable, local Wi-Fi, or SD card and import it on your other device. Zero data ever touches an external server.
                     </div>
                 </div>
 
-                <div class="faq-item bento-card p-6">
+                <div class="faq-item reveal bento-card p-6">
                     <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left font-bold text-white text-base">
                         <span>What happens if I forget my Master PIN?</span>
                         <i class="fas fa-chevron-down faq-icon text-slate-400 text-xs transition-transform duration-200"></i>
                     </button>
-                    <div class="faq-content hidden pt-4 text-slate-400 text-sm leading-relaxed border-t border-white/5 mt-4">
+                    <div class="faq-content pt-4 text-slate-400 text-sm leading-relaxed border-t border-white/5 mt-4">
                         Because MyPass Vault is strictly offline with zero centralized servers, there is no "Forgot Password" link to email you. We provide a secondary <strong>Recovery Password</strong> prompt during initial setup. Keep this recovery password in a safe physical place.
                     </div>
                 </div>
 
-                <div class="faq-item bento-card p-6">
+                <div class="faq-item reveal bento-card p-6">
                     <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left font-bold text-white text-base">
                         <span>Does the 2FA TOTP authenticator work without an internet connection?</span>
                         <i class="fas fa-chevron-down faq-icon text-slate-400 text-xs transition-transform duration-200"></i>
                     </button>
-                    <div class="faq-content hidden pt-4 text-slate-400 text-sm leading-relaxed border-t border-white/5 mt-4">
+                    <div class="faq-content pt-4 text-slate-400 text-sm leading-relaxed border-t border-white/5 mt-4">
                         Yes, 100%! Standard RFC 6238 TOTP generates 6-digit tokens purely based on cryptographic mathematical time hashing between your device clock and your shared secret key. It requires zero internet access.
                     </div>
                 </div>
 
-                <div class="faq-item bento-card p-6">
+                <div class="faq-item reveal bento-card p-6">
                     <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left font-bold text-white text-base">
                         <span>Is MyPass Vault truly free and open?</span>
                         <i class="fas fa-chevron-down faq-icon text-slate-400 text-xs transition-transform duration-200"></i>
                     </button>
-                    <div class="faq-content hidden pt-4 text-slate-400 text-sm leading-relaxed border-t border-white/5 mt-4">
+                    <div class="faq-content pt-4 text-slate-400 text-sm leading-relaxed border-t border-white/5 mt-4">
                         Yes. No monthly subscriptions, no enterprise lock-in, and zero advertisements. All binaries are precompiled and ready to install.
                     </div>
                 </div>
@@ -569,20 +621,24 @@
         </div>
     </section>
 
+    <div class="section-divider"></div>
+
     <!-- Download Section: 1-Click Production Binaries -->
-    <section id="download" class="py-24 border-t border-white/5 bg-[#0A0C12]">
+    <section id="download" class="py-24 bg-[#0A0C12]">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <span class="badge-pill emerald mb-3">Production Ready</span>
-            <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-4">
-                Download MyPass Vault v2.0
-            </h2>
-            <p class="text-slate-400 max-w-xl mx-auto mb-12 text-sm sm:text-base">
-                No credit cards, zero registration, and immediate 1-click installation.
-            </p>
+            <div class="reveal">
+                <span class="badge-pill emerald mb-3">Production Ready</span>
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-4">
+                    Download MyPass Vault v2.0
+                </h2>
+                <p class="text-slate-400 max-w-xl mx-auto mb-12 text-sm sm:text-base">
+                    No credit cards, zero registration, and immediate 1-click installation.
+                </p>
+            </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-left">
                 <!-- Windows Card -->
-                <div class="bento-card flex flex-col justify-between">
+                <div class="bento-card reveal download-windows flex flex-col justify-between">
                     <div>
                         <div class="flex items-center space-x-3 mb-4">
                             <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 text-2xl">
@@ -605,7 +661,7 @@
                 </div>
 
                 <!-- Android Card -->
-                <div class="bento-card flex flex-col justify-between">
+                <div class="bento-card reveal download-android flex flex-col justify-between">
                     <div>
                         <div class="flex items-center space-x-3 mb-4">
                             <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-2xl">
@@ -654,6 +710,9 @@
 
     <!-- Interactive Live Showcase Script -->
     <script src="interactive.js"></script>
+
+    <!-- 3D Physics, Specular Glare & Liquid Glass Engine -->
+    <script src="physics.js"></script>
 
 </body>
 </html>
